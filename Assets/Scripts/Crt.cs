@@ -7,6 +7,7 @@ public class Crt
         Cyan,
         Black,
         Blue,
+        Brown,
         DarkGray,
         Green,
         LightBlue,

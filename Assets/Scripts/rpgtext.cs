@@ -5,6 +5,7 @@
 //{ things I've forgotten. And it's still under a thousand lines }
 //{ long, so it isn't really even worth splitting it up. }
 
+using System;
 using System.IO;
 using System.Collections.Generic;
 
@@ -579,12 +580,16 @@ public class rpgtext
         Crt.Window(DCTextBox_X1, DCTextBox_Y1, DCTextBox_X2, DCTextBox_Y2);
 
         Crt.GotoXY(GM_X, GM_Y);
+
+        Crt.AutoScrollOn();
         if (GM_X != 1)
         {
             Crt.Write("\n");
         }
         Crt.TextColor(DCBulletColor);
         Crt.Write("> ");
+
+        Crt.AutoScrollOff();
 
         //{ Reset the Cursor Pos.}
         GM_X = Crt.WhereX();
@@ -606,18 +611,20 @@ public class rpgtext
             DCNewMessage();
         }
 
-	    //{ Set the text color.}
-	    Crt.TextColor(DCTextColor);
+        //{ Set the text color.}
+        Crt.TextColor(DCTextColor);
 
 	    //{ Set the window to the desired print area, and move to the right pos.}
 	    Crt.Window(DCTextBox_X1,DCTextBox_Y1,DCTextBox_X2,DCTextBox_Y2);
 	    Crt.GotoXY(GM_X, GM_Y);
 
-	    //{call the Delineate procedure to prettyprint it.}
-	    Delineate(msg, DCTextBox_X2 - DCTextBox_X1 + 1, GM_X);
+        //{call the Delineate procedure to prettyprint it.}
+        Crt.AutoScrollOn();
+        Delineate(msg, DCTextBox_X2 - DCTextBox_X1 + 1, GM_X);
+        Crt.AutoScrollOff();
 
-	    //{Save the current cursor position.}
-	    GM_X = Crt.WhereX();
+        //{Save the current cursor position.}
+        GM_X = Crt.WhereX();
 	    GM_Y = Crt.WhereY();
 
 	    //{restore the window to its original, full dimensions.}
@@ -627,7 +634,7 @@ public class rpgtext
     public static void DCGameMessage(string msg)
     {
         //{ As above, but starts new message.}
-        DCGameMessage(msg, false);
+        DCGameMessage(msg, true);
     }
 
 
@@ -651,7 +658,7 @@ public class rpgtext
 
         Crt.ClrEol();
 
-        int width = DCTextBox_X2 - DCTextBox_X1 - GM_X;
+        int width = Math.Min(DCTextBox_X2 - DCTextBox_X1 - GM_X, msg.Length);
         if (width < 1)
         {
             return;

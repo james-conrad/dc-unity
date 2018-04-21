@@ -1254,23 +1254,40 @@ public class texmaps
             {
                 //{ There's no model. Show the terrain.}
                 int t = GetTerr(gb, x, y);
-                if (norm)
+                if (TileLOS(gb.POV, x, y))
                 {
-                    Crt.TextColor(TerrColor[t]);
-                    Crt.TextBackground(Crt.Color.Black);
-                }
-                else
-                {
-                    Crt.TextBackground(TerrColor[t]);
-                    if (TerrColor[t] == Crt.Color.White)
+                    if (norm)
                     {
-                        Crt.TextColor(Crt.Color.LightCyan);
+                        Crt.TextColor(TerrColor[t]);
+                        Crt.TextBackground(Crt.Color.Black);
                     }
                     else
                     {
-                        Crt.TextColor(Crt.Color.White);
+                        Crt.TextBackground(TerrColor[t]);
+                        if (TerrColor[t] == Crt.Color.White)
+                        {
+                            Crt.TextColor(Crt.Color.LightCyan);
+                        }
+                        else
+                        {
+                            Crt.TextColor(Crt.Color.White);
+                        }
                     }
                 }
+                else
+                {
+                    if (norm)
+                    {
+                        Crt.TextColor(Crt.Color.DarkGray);
+                        Crt.TextBackground(Crt.Color.Black);
+                    }
+                    else
+                    {
+                        Crt.TextBackground(Crt.Color.DarkGray);
+                        Crt.TextColor(Crt.Color.Black);
+                    }
+                }
+
                 Crt.Write(TerrChar[t]);
             }
             else

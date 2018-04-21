@@ -31,6 +31,8 @@ public class ConsoleRenderer : MonoBehaviour
 
         MakeRandom();
 
+        MakeFrame();
+
         if (runningGame != null)
         {
             runningGame.Abort();
@@ -44,18 +46,19 @@ public class ConsoleRenderer : MonoBehaviour
         Color.cyan,
         Color.black,
         Color.blue,
-        new Color(0.23f, 0.25f, 0.31f),
+        new Color(0.54f, 0.27f, 0.07f),
 
+        new Color(0.23f, 0.25f, 0.31f),
         new Color(0.1f, 0.65f, 0.0f),
         new Color(0.1f, 0.2f, 1.0f),
         new Color(0.2f, 0.9f, 1.0f),
-        new Color(0.63f, 0.65f, 0.7f),
 
+        new Color(0.63f, 0.65f, 0.7f),   
         new Color(0.2f, 1.0f, 0.3f),
         new Color(0.9f, 0.2f, 1.0f),
         new Color(1.0f, 0.2f, 0.0f),
-        new Color(0.5f, 0.1f, 0.6f),
 
+        new Color(0.5f, 0.1f, 0.6f),
         Color.red,
         Color.white,
         Color.yellow,
@@ -68,21 +71,22 @@ public class ConsoleRenderer : MonoBehaviour
             case Crt.Color.Cyan: return colors[0];
             case Crt.Color.Black: return colors[1];
             case Crt.Color.Blue: return colors[2];
-            case Crt.Color.DarkGray: return colors[3];
+            case Crt.Color.Brown: return colors[3];
 
-            case Crt.Color.Green: return colors[4];
-            case Crt.Color.LightBlue: return colors[5];
-            case Crt.Color.LightCyan: return colors[6];
-            case Crt.Color.LightGray: return colors[7];
+            case Crt.Color.DarkGray: return colors[4];
+            case Crt.Color.Green: return colors[5];
+            case Crt.Color.LightBlue: return colors[6];
+            case Crt.Color.LightCyan: return colors[7];
 
-            case Crt.Color.LightGreen: return colors[8];
-            case Crt.Color.LightMagenta: return colors[9];
-            case Crt.Color.LightRed: return colors[10];
-            case Crt.Color.Magenta: return colors[11];
+            case Crt.Color.LightGray: return colors[8];
+            case Crt.Color.LightGreen: return colors[9];
+            case Crt.Color.LightMagenta: return colors[10];
+            case Crt.Color.LightRed: return colors[11];
 
-            case Crt.Color.Red: return colors[12];
-            case Crt.Color.White: return colors[13];
-            case Crt.Color.Yellow: return colors[14];
+            case Crt.Color.Magenta: return colors[12];
+            case Crt.Color.Red: return colors[13];
+            case Crt.Color.White: return colors[14];
+            case Crt.Color.Yellow: return colors[15];
         }
 
         return Color.black;
@@ -147,6 +151,61 @@ public class ConsoleRenderer : MonoBehaviour
         }
     }
 
+    void MakeFrame()
+    {
+        Vector3Int tilePos = new Vector3Int(0, 0, 0);
+
+        int top = consoleHeight / 2;
+        int bottom = consoleHeight / 2 - consoleHeight + 1;
+        int left = -consoleWidth / 2;
+        int right = -consoleWidth / 2 + consoleWidth - 1;
+
+        for (int x = 1; x < consoleWidth - 1; ++x)
+        {
+            tilePos.x = -consoleWidth / 2 + x;
+
+            tilePos.y = top;
+            tilemap.SetTile(tilePos, asciiTiles[205]);
+            tilemap.SetColor(tilePos, Color.white);
+
+            tilePos.y = bottom;
+            tilemap.SetTile(tilePos, asciiTiles[205]);
+            tilemap.SetColor(tilePos, Color.white);
+        }
+
+        for (int y = 1; y < consoleHeight - 1; ++y)
+        {
+            tilePos.y = consoleHeight / 2 - y;
+
+            tilePos.x = left;
+            tilemap.SetTile(tilePos, asciiTiles[186]);
+            tilemap.SetColor(tilePos, Color.white);
+            tilePos.x = right;
+            tilemap.SetTile(tilePos, asciiTiles[186]);
+            tilemap.SetColor(tilePos, Color.white);
+        }
+
+        tilePos.x = left;
+
+        tilePos.y = top;
+        tilemap.SetTile(tilePos, asciiTiles[201]);
+        tilemap.SetColor(tilePos, Color.white);
+
+        tilePos.y = bottom;
+        tilemap.SetTile(tilePos, asciiTiles[200]);
+        tilemap.SetColor(tilePos, Color.white);
+
+        tilePos.x = right;
+
+        tilePos.y = top;
+        tilemap.SetTile(tilePos, asciiTiles[187]);
+        tilemap.SetColor(tilePos, Color.white);
+
+        tilePos.y = bottom;
+        tilemap.SetTile(tilePos, asciiTiles[188]);
+        tilemap.SetColor(tilePos, Color.white);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -181,13 +240,14 @@ public class ConsoleRenderer : MonoBehaviour
             rpgtext.keys.AddKeypress(new rpgtext.Key(rpgtext.Key.Type.ESC));
         }
 
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            rpgtext.keys.AddKeypress(new rpgtext.Key('\t'));
+        }
+
         if (runningGame != null)
         {
-            if (runningGame.IsAlive)
-            {
-                MakeRandom();
-            }
-            else if (runningGame.ThreadState == ThreadState.Aborted || runningGame.ThreadState == ThreadState.Stopped)
+            if (runningGame.ThreadState == ThreadState.Aborted || runningGame.ThreadState == ThreadState.Stopped)
             {
                 runningGame.Join();
                 Debug.Log("Thread exited..");
@@ -234,7 +294,7 @@ public class ConsoleRenderer : MonoBehaviour
 
             cursorSprite.transform.position = new Vector3(
                 (float)(-Crt.consoleWidth / 2 + cursorX) - 0.5f,
-                (float)((Crt.consoleHeight / 2 - cursorY + 1) + 0.5f) * 1.5f,
+                (float)((Crt.consoleHeight / 2 - cursorY + 1) + 0.5f) * 1.5f - 0.75f,
                 0.0f);
         }
         else
