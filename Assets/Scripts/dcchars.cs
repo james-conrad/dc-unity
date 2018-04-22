@@ -241,7 +241,7 @@ public class dcchars
 
         //{If the player is not wearing shoes, movement over the hard}
         //{metal floors of the space station is adversely affected.}
-        if (pc.eqp[ES_Foot] == null)
+        if (pc.eqp[ES_Foot - 1] == null)
         {
             it -= 2;
         }
@@ -284,10 +284,10 @@ public class dcchars
 	    //{Calculate the PC's melee skill step.}
 	    int it = pc.skill[SKILL_MeleeAttack];
 
-        if (pc.eqp[ES_MeleeWeapon] != null)
+        if (pc.eqp[ES_MeleeWeapon - 1] != null)
         {
-            it += dcitems.CWep[pc.eqp[ES_MeleeWeapon].icode].ACC;
-            it += CStat(pc, dcitems.CWep[pc.eqp[ES_MeleeWeapon].icode].stat) / 3;
+            it += dcitems.CWep[pc.eqp[ES_MeleeWeapon - 1].icode - 1].ACC;
+            it += CStat(pc, dcitems.CWep[pc.eqp[ES_MeleeWeapon - 1].icode - 1].stat) / 3;
         }
         else
         {
@@ -295,9 +295,9 @@ public class dcchars
         }
 
         //{Add the CCM of the PC's missile weapon.}
-        if (pc.eqp[ES_MissileWeapon] != null)
+        if (pc.eqp[ES_MissileWeapon - 1] != null)
         {
-            it += dcitems.CGuns[pc.eqp[ES_MissileWeapon].icode].CCM;
+            it += dcitems.CGuns[pc.eqp[ES_MissileWeapon - 1].icode - 1].CCM;
         }
 
 	    it += PCStatusValue(pc.SF, statusfx.SEF_H2HBonus);
@@ -315,9 +315,9 @@ public class dcchars
         int it = 0;
 
         //{Calculate base weapon damage.}
-        if (pc.eqp[ES_MeleeWeapon] != null)
+        if (pc.eqp[ES_MeleeWeapon - 1] != null)
         {
-            it = dcitems.CWep[pc.eqp[ES_MeleeWeapon].icode].DMG;
+            it = dcitems.CWep[pc.eqp[ES_MeleeWeapon - 1].icode - 1].DMG;
         }
 
         //{Add Strength bonus.}
@@ -340,9 +340,9 @@ public class dcchars
     {
         //{Calculate the PC's melee skill step.}
         int it = pc.skill[SKILL_MissileAttack] + CStat(pc, STAT_Dexterity) / 3;
-        if (pc.eqp[ES_MissileWeapon] != null)
+        if (pc.eqp[ES_MissileWeapon - 1] != null)
         {
-            it += dcitems.CGuns[pc.eqp[ES_MissileWeapon].icode].ACC;
+            it += dcitems.CGuns[pc.eqp[ES_MissileWeapon - 1].icode - 1].ACC;
         }
 
         it += PCStatusValue(pc.SF, statusfx.SEF_MslBonus);
@@ -358,9 +358,9 @@ public class dcchars
         //{Calculate the damage of the PC's basic missile attack.}
         int it = 0;
 
-        if (pc.eqp[ES_MissileWeapon] != null)
+        if (pc.eqp[ES_MissileWeapon - 1] != null)
         {
-            it = dcitems.CGuns[pc.eqp[ES_MissileWeapon].icode].DMG;
+            it = dcitems.CGuns[pc.eqp[ES_MissileWeapon - 1].icode - 1].DMG;
         }
 
         return it;
@@ -371,9 +371,9 @@ public class dcchars
         //{Calculate the range of the PC's basic missile attack.}
         int it = 0;
 
-        if (pc.eqp[ES_MissileWeapon] != null)
+        if (pc.eqp[ES_MissileWeapon - 1] != null)
         {
-            it = dcitems.CGuns[pc.eqp[ES_MissileWeapon].icode].RNG;
+            it = dcitems.CGuns[pc.eqp[ES_MissileWeapon - 1].icode - 1].RNG;
         }
 
         return it;
@@ -408,21 +408,21 @@ public class dcchars
 	    //{Add up the protection value of all the bits of armor that}
 	    //{the PC is wearing.}
 	    int it = 0;
-        if (pc.eqp[ES_Head] != null && pc.eqp[ES_Head].ikind == dcitems.IKIND_Cap)
+        if (pc.eqp[ES_Head - 1] != null && pc.eqp[ES_Head - 1].ikind == dcitems.IKIND_Cap)
         {
-            it += dcitems.CCap[pc.eqp[ES_Head].icode].PV;
+            it += dcitems.CCap[pc.eqp[ES_Head - 1].icode - 1].PV;
         }
-        if (pc.eqp[ES_Body] != null && pc.eqp[ES_Body].ikind == dcitems.IKIND_Armor)
+        if (pc.eqp[ES_Body - 1] != null && pc.eqp[ES_Body - 1].ikind == dcitems.IKIND_Armor)
         {
-            it += dcitems.CArmor[pc.eqp[ES_Body].icode].PV;
+            it += dcitems.CArmor[pc.eqp[ES_Body - 1].icode - 1].PV;
         }
-        if (pc.eqp[ES_Hand] != null && pc.eqp[ES_Hand].ikind == dcitems.IKIND_Glove)
+        if (pc.eqp[ES_Hand - 1] != null && pc.eqp[ES_Hand - 1].ikind == dcitems.IKIND_Glove)
         {
-            it += dcitems.CGlove[pc.eqp[ES_Hand].icode].PV;
+            it += dcitems.CGlove[pc.eqp[ES_Hand - 1].icode - 1].PV;
         }
-        if (pc.eqp[ES_Foot] != null && pc.eqp[ES_Foot].ikind == dcitems.IKIND_Shoe)
+        if (pc.eqp[ES_Foot - 1] != null && pc.eqp[ES_Foot - 1].ikind == dcitems.IKIND_Shoe)
         {
-            it += dcitems.CShoe[pc.eqp[ES_Foot].icode].PV;
+            it += dcitems.CShoe[pc.eqp[ES_Foot - 1].icode - 1].PV;
         }
 
 	    //{Add the bonus for mystic armor, i.e. residual spells.}
@@ -438,7 +438,7 @@ public class dcchars
 	    it += CStat(pc, STAT_Luck) / 5 + CStat(pc, STAT_Dexterity) / 9;
 
         //{If the player is not wearing shoes, stealth is improved.}
-        if (pc.eqp[ES_Foot] == null)
+        if (pc.eqp[ES_Foot - 1] == null)
         {
             it += 1;
         }
@@ -500,7 +500,7 @@ public class dcchars
 
         //{If the player is not wearing shoes, movement over the hard}
         //{metal floors of the space station is adversely affected.}
-        if (pc.eqp[ES_Foot] == null)
+        if (pc.eqp[ES_Foot - 1] == null)
         {
             it -= 1;
         }

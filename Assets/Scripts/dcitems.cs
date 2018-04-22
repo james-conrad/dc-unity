@@ -182,12 +182,12 @@ public class dcitems
 
     public const int NumGuns = 15;
     public const int NumCal = 6;
-    public const int CAL_5mm = 0;
-    public const int CAL_8mm = 1;
-    public const int CAL_12mm = 2;
-    public const int CAL_25mm = 3;
-    public const int CAL_Energy = 4;
-    public const int CAL_Napalm = 5;
+    public const int CAL_5mm = 1;
+    public const int CAL_8mm = 2;
+    public const int CAL_12mm = 3;
+    public const int CAL_25mm = 4;
+    public const int CAL_Energy = 5;
+    public const int CAL_Napalm = 6;
 
     public static MissileDesc[] CGuns = new MissileDesc[NumGuns]
     {
@@ -1015,31 +1015,31 @@ public class dcitems
             switch (i.ikind)
             {
                 case IKIND_Gun:
-                    return CGuns[i.icode].name;
+                    return CGuns[i.icode - 1].name;
                 case IKIND_Wep:
-                    return CWep[i.icode].name;
+                    return CWep[i.icode - 1].name;
                 case IKIND_Cap:
-                    return CCap[i.icode].name;
+                    return CCap[i.icode - 1].name;
                 case IKIND_Armor:
-                    return CArmor[i.icode].name;
+                    return CArmor[i.icode - 1].name;
                 case IKIND_Glove:
-                    return CGlove[i.icode].name;
+                    return CGlove[i.icode - 1].name;
                 case IKIND_Shoe:
-                    return CShoe[i.icode].name;
+                    return CShoe[i.icode - 1].name;
                 case IKIND_Food:
                     //{Food which belongs to one of the special groups gets}
                     //{a special addition to the start of its name.}
-                    if (CFood[i.icode].fk != 0)
+                    if (CFood[i.icode - 1].fk != 0)
                     {
-                        return FKName[CFood[i.icode].fk] + ": " + CFood[i.icode].name;
+                        return FKName[CFood[i.icode - 1].fk - 1] + ": " + CFood[i.icode - 1].name;
                     }
                     else
                     {
-                        return CFood[i.icode].name;
+                        return CFood[i.icode - 1].name;
                     }
                 case IKIND_Ammo:
                     {
-                        it = AmmoName[i.icode % 100];
+                        it = AmmoName[i.icode % 100 - 1];
                         if (i.icode / 100 != 0)
                         {
                             it += " (" + CSpecAmmo[i.icode / 100].name + ")";
@@ -1047,15 +1047,15 @@ public class dcitems
                         return it;
                     }
                 case IKIND_KeyItem:
-                    return KCat[i.icode].name;
+                    return KCat[i.icode - 1].name;
                 case IKIND_Book:
-                    return CBook[i.icode].name;
+                    return CBook[i.icode - 1].name;
                 case IKIND_Grenade:
                     {
-                        it = CGrn[i.icode].name;
-                        if (CGrn[i.icode].sayGrenade)
+                        it = CGrn[i.icode - 1].name;
+                        if (CGrn[i.icode - 1].sayGrenade)
                         {
-                            it = " Grenade";
+                            it += " Grenade";
                         }
                         return it;
                     }
@@ -1088,7 +1088,7 @@ public class dcitems
                         //{a special addition to the start of its name.}
                         if (CFood[i.icode].fk != 0)
                         {
-                            it = "?" + FKName[CFood[i.icode].fk];
+                            it = "?" + FKName[CFood[i.icode - 1].fk - 1];
                         }
                         else
                         {
@@ -1097,14 +1097,14 @@ public class dcitems
                         return it;
                     }
                 case IKIND_Ammo:
-                    return "?" + AmmoName[i.icode % 100];
+                    return "?" + AmmoName[i.icode % 100 - 1];
                 case IKIND_KeyItem:
                     return "?Item";
                 case IKIND_Book:
                     return "?Book";
                 case IKIND_Grenade:
                     {
-                        if (CGrn[i.icode].sayGrenade)
+                        if (CGrn[i.icode - 1].sayGrenade)
                             return "?Grenade";
                         else
                             return "?Item";
@@ -1125,13 +1125,13 @@ public class dcitems
 
         if (Mergeable(i))
         {
-            it += String.Format(" x{1}", it, i.charge);
+            it += String.Format(" x{0}", i.charge);
         }
         else if (i.ikind == IKIND_Gun && i.ID)
         {
             if (i.charge != -1)
             {
-                it += String.Format(" [{1}]", i.charge);
+                it += String.Format(" [{0}]", i.charge);
             }
             else
             {
@@ -1164,18 +1164,18 @@ public class dcitems
 
         switch (i.ikind)
         {
-            case IKIND_Gun: return CGuns[i.icode].Desc;
-            case IKIND_Wep: return CWep[i.icode].Desc;
-            case IKIND_Cap: return CCap[i.icode].Desc;
-            case IKIND_Armor: return CArmor[i.icode].Desc;
-            case IKIND_Glove: return CGlove[i.icode].Desc;
-            case IKIND_Shoe: return CShoe[i.icode].Desc;
-            case IKIND_Food: return CFood[i.icode].Desc;
+            case IKIND_Gun: return CGuns[i.icode - 1].Desc;
+            case IKIND_Wep: return CWep[i.icode - 1].Desc;
+            case IKIND_Cap: return CCap[i.icode - 1].Desc;
+            case IKIND_Armor: return CArmor[i.icode - 1].Desc;
+            case IKIND_Glove: return CGlove[i.icode - 1].Desc;
+            case IKIND_Shoe: return CShoe[i.icode - 1].Desc;
+            case IKIND_Food: return CFood[i.icode - 1].Desc;
             case IKIND_Ammo: return CSpecAmmo[i.icode / 100].Desc;
-            case IKIND_KeyItem: return KCat[i.icode].Desc;
-            case IKIND_Book: return CBook[i.icode].Desc;
-            case IKIND_Grenade: return CGrn[i.icode].Desc;
-            case IKIND_Electronics: return ElecCat[i.icode].Desc;
+            case IKIND_KeyItem: return KCat[i.icode - 1].Desc;
+            case IKIND_Book: return CBook[i.icode - 1].Desc;
+            case IKIND_Grenade: return CGrn[i.icode - 1].Desc;
+            case IKIND_Electronics: return ElecCat[i.icode - 1].Desc;
         }
 
         return string.Empty;
@@ -1258,7 +1258,6 @@ public class dcitems
     {
         //{Read the Item Grid IG from the file F.}
         IGrid IG = new IGrid();
-
 
         int x = int.Parse(f.ReadLine());
         while (x != 0)

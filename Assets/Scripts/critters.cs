@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-public class critter
+public class critters
 {
     //{This unit defines the creature stuff for DeadCold. It doesn't}
     //{deal with creature behavior; just some primitive creature handling}
@@ -231,7 +231,7 @@ public class critter
             EType: 0, EChance: 0,
             XPV: 10
         ),
-        new CDesc( "Crt.Color.Red Gore",
+        new CDesc( "Red Gore",
             CT: CT_Alive,
             IntroText: "Standing before you is a hideous column of diseased flesh. It seems to be immobile, but the acid being excreted from its pores is eating its way through the station's hull.",
             Gfx: 'X', Color: Crt.Color.Red,
@@ -622,9 +622,9 @@ public class critter
         int M = 0;
         for (int t = 0; t < NumCT; t++)
         {
-            if (MonMan[C.crit].CT.Contains(CTMan[t]))
+            if (MonMan[C.crit - 1].CT.Contains(CTMan[t]))
             {
-                M += CTResist[t, E - 1];
+                M += CTResist[t, E];
             }
         }
 
@@ -680,7 +680,7 @@ public class critter
         {
             f.WriteLine(C.crit);
 
-            //{Record the position of the critter.}
+            //{Record the position of the critters.}
             f.WriteLine(C.M.x);
             f.WriteLine(C.M.y);
 

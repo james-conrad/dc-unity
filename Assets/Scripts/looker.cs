@@ -140,7 +140,7 @@ public class looker
                     M = gb.mlist;
             }
 
-            if (texmaps.TileLOS(gb.POV, M.x, M.y) && M != gb.POV.m && texmaps.OnTheScreen(gb, M.x, M.y) && M.kind == critter.MKIND_Critter)
+            if (texmaps.TileLOS(gb.POV, M.x, M.y) && M != gb.POV.m && texmaps.OnTheScreen(gb, M.x, M.y) && M.kind == critters.MKIND_Critter)
             {
                 M2 = M;
             }

@@ -38,6 +38,11 @@ public class spells
             this.Desc = Desc;
         }
 
+        public SpellDesc Clone()
+        {
+            return new SpellDesc(name, cdesc, eff, step, p1, p2, cost, c, ATT, Desc);
+        }
+
         public string name;
         public string cdesc;  //{description when cast}
         public int eff;       //{Spell effect code}

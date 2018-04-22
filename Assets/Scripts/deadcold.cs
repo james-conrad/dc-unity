@@ -37,7 +37,7 @@ public class deadcold
 
     static void RestoreGame()
     {
-        libram.ReadBook();
+        libram.ReadBook(null, 1);
     }
 
     static void StartGame()
@@ -59,7 +59,7 @@ public class deadcold
 
                 bool wall = !door && (edge || iEdge);
 
-                gb.map[x, y].terr = wall ? 2 : 1;
+                gb.map[x, y].terr = wall ? 3 : 2;
                 //rpgdice.rng.Next(0, 5);// texmaps.NumTerr);
 
                 if (rpgdice.rng.Next(0, 100) == 1)
@@ -81,7 +81,7 @@ public class deadcold
 
         for (int i = 0; i < 10; ++i)
         {
-            critter.AddCritter(ref SC.CList, SC.gb, rpgdice.rng.Next(critter.MaxCrit) + 1, x - 15 + rpgdice.rng.Next(30), y - 15 + rpgdice.rng.Next(30));
+            critters.AddCritter(ref SC.CList, SC.gb, rpgdice.rng.Next(critters.MaxCrit) + 1, x - 15 + rpgdice.rng.Next(30), y - 15 + rpgdice.rng.Next(30));
         }
 
         gamebook.PCStatLine(SC);
@@ -128,8 +128,17 @@ public class deadcold
                 //        texfx.DeIndicateModel(gb, m);
                 //        break;
                 //}
-                rpgtext.DCGameMessage("Pick a Target:");
-                texmaps.Point p = looker.SelectPoint(SC, true, true, null);
+                //rpgtext.DCGameMessage("Pick a Target:");
+
+                //texmaps.Point p = looker.SelectPoint(SC, true, true, null);
+                //texmaps.Point b = texmaps.LocateBlock(SC.gb, m.x, m.y, p.x, p.y);
+                //texfx.DakkaDakka(gb, b.x, b.y);
+
+                backpack.HandyMap(SC);
+
+                backpack.Inventory(SC, true);
+
+                zapspell.CastSpell(SC, true);
             }
             else
             {
@@ -142,6 +151,29 @@ public class deadcold
                 gamebook.DoleExperience(SC, 1);
             }
 
+            cbrain.BrownianMotion(SC);
+
+            critters.Critter Cr = SC.CList;
+            while (Cr != null)
+            {
+                //{Save the position of the next critter,}
+                //{since the critter we're processing might}
+                //{accidentally kill itself during its move.}
+                SC.CA2 = Cr.next;
+                for (int t = 1; t <= gamebook.NumberOfActions(SC.ComTime, critters.MonMan[Cr.crit - 1].Speed); ++t)
+                {
+                    cbrain.CritterAction(SC, ref Cr);
+                    if (Cr == null)
+                        break;
+                }
+                Cr = SC.CA2;
+
+                //if (SC.PC.HP < 1)
+                //    Cr = null;
+            }
+
+            PC.HP = PC.HPMax;
+            SC.ComTime += 1;
             dir = rpgtext.DirKey();
         }
     }

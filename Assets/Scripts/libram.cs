@@ -5,9 +5,10 @@ class libram
     //{This unit contains all of the books which the player}
     //{can find over the course of the game.}
 
-    public static void ReadBook()
+    public static void ReadBook(gamebook.Scenario SC, int N)
     {
         //{ Read book # N.}
+        // Actually, it looks like this really isn't ready for prime time... since the Scenario and N aren't used yet.
 
         //{Set up the screen.}
         Crt.Window(1, 4, 80, 24);

@@ -103,7 +103,7 @@ public class texfx
         }
     }
 
-    static void Delay()
+    public static void Delay()
     {
         if (rpgtext.FrameDelay > 0)
         {
@@ -111,7 +111,7 @@ public class texfx
         }
     }
 
-    static void DelayDiv(int d)
+    public static void DelayDiv(int d)
     {
         if (rpgtext.FrameDelay > 0)
         {

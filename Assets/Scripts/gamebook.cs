@@ -29,7 +29,7 @@ public class gamebook
         public texmaps.GameBoard gb;
         public dcitems.IGrid ig;
         public plotbase.SAtt PL;
-        public critter.Critter CList;
+        public critters.Critter CList;
         public cwords.MPU Comps;
     }
 
@@ -46,11 +46,11 @@ public class gamebook
         public plotbase.SAtt PLLocal;  //{Local plot effects.}
         public plotbase.SAtt PLGlobal; //{Global plot effects.}
         public plotbase.SAtt PLTrig;   //{Triggers waiting to be processed.}
-        public critter.Critter CList;  //{the monsters}
+        public critters.Critter CList;  //{the monsters}
         public cwords.MPU Comps;       //{the computer terminals}
         public cwords.Cloud Fog;       //{Vapors floating around the map}
-        public critter.Critter CAct;   //{the active critter, and the next to move.}
-        public critter.Critter CA2;
+        public critters.Critter CAct;   //{the active critter, and the next to move.}
+        public critters.Critter CA2;
         public dcchars.DCChar PC;      //{the PC}
         public plotbase.NAtt NA;       //{ Numeric Attributes }
         public Frozen[] Frozen_Levels = new Frozen[Num_Levels];
@@ -97,7 +97,7 @@ public class gamebook
 
         //{Remove all mention of this model from the Target lists}
         //{of various monsters.}
-        critter.Critter CT = SC.CList;
+        critters.Critter CT = SC.CList;
         while (CT != null)
         {
             if (CT.Target == M)
@@ -110,13 +110,13 @@ public class gamebook
         if (SC.PC.target == M)
             SC.PC.target = null;
 
-        //{Clear the active critter, if this is the active critter.}
+        //{Clear the active critter, if this is the active critters.}
         if (SC.CAct != null && SC.CAct.M == M)
             SC.CAct = null;
 
         //{If the next critter to act is the one who was killed,}
         //{move that pointer to the next critter in line.}
-        if (SC.CA2 != null & SC.CA2.M == M)
+        if (SC.CA2 != null && SC.CA2.M == M)
         {
             SC.CA2 = SC.CA2.next;
         }
@@ -129,19 +129,19 @@ public class gamebook
         int it = 1;
         switch (M.kind)
         {
-            case critter.MKIND_Critter:
-                //{The model is a critter.}
+            case critters.MKIND_Critter:
+                //{The model is a critters.}
                 //{Look up its defense step from the appropriate array.}
                 switch (D)
                 {
                     case DF_Mystic:
-                        it = critter.MonMan[critter.LocateCritter(M, SC.CList).crit - 1].Mystic;
+                        it = critters.MonMan[critters.LocateCritter(M, SC.CList).crit - 1].Mystic;
                         break;
                     case DF_AvoidTrap:
-                        it = critter.MonMan[critter.LocateCritter(M, SC.CList).crit - 1].Sense;
+                        it = critters.MonMan[critters.LocateCritter(M, SC.CList).crit - 1].Sense;
                         break;
                     case DF_Physical:
-                        it = critter.MonMan[critter.LocateCritter(M, SC.CList).crit - 1].DefStep;
+                        it = critters.MonMan[critters.LocateCritter(M, SC.CList).crit - 1].DefStep;
                         break;
                 }
                 break;
@@ -182,8 +182,8 @@ public class gamebook
             return "Empty Space";
         else if (M.kind == dcchars.MKIND_Character)
             return "you";
-        else if (M.kind == critter.MKIND_Critter)
-            return critter.MonMan[critter.LocateCritter(M, SC.CList).crit - 1].name;
+        else if (M.kind == critters.MKIND_Critter)
+            return critters.MonMan[critters.LocateCritter(M, SC.CList).crit - 1].name;
         else if (M.kind == cwords.MKIND_Cloud)
             return cwords.CloudMan[cwords.LocateCloud(M, SC.Fog).Kind - 1].name;
         else if (M.kind == cwords.MKIND_MPU)
@@ -204,7 +204,7 @@ public class gamebook
         else if (SC.gb.map[X - 1, Y - 1].trap > 0 && texmaps.TileLOS(SC.gb.POV, X, Y))
             return "a trap";
         else if (SC.gb.map[X - 1, Y - 1].visible)
-            return texmaps.TerrName[SC.gb.map[X - 1, Y - 1].terr];
+            return texmaps.TerrName[SC.gb.map[X - 1, Y - 1].terr - 1];
 
         return "unknown";
     }
@@ -323,7 +323,7 @@ public class gamebook
         dcitems.WriteIGrid(SC.ig, f);
 
         //{Write the Critters List}
-        critter.WriteCritterList(SC.CList, f);
+        critters.WriteCritterList(SC.CList, f);
 
         //{Write the PlotLine Scripts}
         plotbase.WriteSAtt(SC.PLLocal, f);
@@ -349,7 +349,7 @@ public class gamebook
                 texmaps.WriteGameBoard(SC.Frozen_Levels[t].gb, f);
                 dcitems.WriteIGrid(SC.Frozen_Levels[t].ig, f);
                 plotbase.WriteSAtt(SC.Frozen_Levels[t].PL, f);
-                critter.WriteCritterList(SC.Frozen_Levels[t].CList, f);
+                critters.WriteCritterList(SC.Frozen_Levels[t].CList, f);
                 cwords.WriteMPU(SC.Frozen_Levels[t].Comps, f);
             }
         }
@@ -389,7 +389,7 @@ public class gamebook
 
         SC.ig = dcitems.ReadIGrid(f, SC.gb);
 
-        SC.CList = critter.ReadCritterList(f, SC.gb, SFV);
+        SC.CList = critters.ReadCritterList(f, SC.gb, SFV);
 
         SC.PLLocal = plotbase.ReadSAtt(f);
         SC.PLGlobal = plotbase.ReadSAtt(f);
@@ -411,7 +411,7 @@ public class gamebook
             SC.Frozen_Levels[T - 1].gb = texmaps.ReadGameBoard(f);
             SC.Frozen_Levels[T - 1].ig = dcitems.ReadIGrid(f, SC.Frozen_Levels[T - 1].gb);
             SC.Frozen_Levels[T - 1].PL = plotbase.ReadSAtt(f);
-            SC.Frozen_Levels[T - 1].CList = critter.ReadCritterList(f, SC.Frozen_Levels[T - 1].gb, SFV);
+            SC.Frozen_Levels[T - 1].CList = critters.ReadCritterList(f, SC.Frozen_Levels[T - 1].gb, SFV);
             SC.Frozen_Levels[T - 1].Comps = cwords.ReadMPU(f, SC.Frozen_Levels[T - 1].gb);
 
             T = int.Parse(f.ReadLine());
@@ -442,7 +442,7 @@ public class gamebook
         SetTrigger(SC, String.Format("{0}{1}%{2}", Trigger, P1, P2));
     }
 
-    public static void UpdateMonsterMemory(Scenario SC, critter.Critter C)
+    public static void UpdateMonsterMemory(Scenario SC, critters.Critter C)
     {
         //{This monster has apparently just walked into the player's}
         //{view. Update the player's Monster Memory, and maybe print}
@@ -453,9 +453,9 @@ public class gamebook
             if (plotbase.NAttValue(SC.NA, plotbase.NAG_MonsterMemory, C.crit) == 1)
             {
                 SetTrigger(SC, PLT_SeeNewCritter, C.crit);
-                if (critter.MonMan[C.crit - 1].IntroText != null)
+                if (critters.MonMan[C.crit - 1].IntroText != null)
                 {
-                    rpgtext.DCGameMessage(critter.MonMan[C.crit - 1].IntroText, true);
+                    rpgtext.DCGameMessage(critters.MonMan[C.crit - 1].IntroText, true);
                     texfx.ModelFlash(SC.gb, C.M);
                     rpgtext.GamePause();
                 }

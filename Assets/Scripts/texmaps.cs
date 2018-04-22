@@ -306,7 +306,7 @@ public class texmaps
             return gb.map[x - 1, y - 1].terr;
         }
 
-        return 0;
+        return 1;
     }
 
     public static bool TileLOS(FrameOfReference pov, int x, int y)
@@ -428,7 +428,7 @@ public class texmaps
             int terr = GetTerr(gb, pov.m.x + p.x, pov.m.y + p.y);
 
             //{Update the Obscurement count.}
-            O += TerrObscurement[terr];
+            O += TerrObscurement[terr - 1];
 
             //{Models also cause obscurement.}
             if (texmodel.ModelPresent(gb.mog, p.x, p.y))
@@ -645,7 +645,7 @@ public class texmaps
             //{Check the target square for terrain concerns.}
             if (it.go)
             {
-                if (rpgdice.rng.Next(1, 101) > TerrPass[GetTerr(gb, x, y)])
+                if (rpgdice.rng.Next(1, 101) > TerrPass[GetTerr(gb, x, y) - 1])
                 {
                     it.go = false;
                 }
@@ -790,7 +790,7 @@ public class texmaps
             int terr = GetTerr(gb, p.x, p.x);
 
             //{Update the Obscurement count.}
-            O += TerrObscurement[terr];
+            O += TerrObscurement[terr - 1];
 
             //{Increase O for models in the way.}
             int mo = 0; //{Obscurement caused by an intervening model.}
@@ -893,6 +893,11 @@ public class texmaps
 	    bool Wall = false;
 
         Point p = new Point(x1, y1);
+
+        if (x1 == x2 && y1 == y2)
+        {
+            return p;
+        }
 
         while (!Wall)
         {
@@ -1258,13 +1263,13 @@ public class texmaps
                 {
                     if (norm)
                     {
-                        Crt.TextColor(TerrColor[t]);
+                        Crt.TextColor(TerrColor[t - 1]);
                         Crt.TextBackground(Crt.Color.Black);
                     }
                     else
                     {
-                        Crt.TextBackground(TerrColor[t]);
-                        if (TerrColor[t] == Crt.Color.White)
+                        Crt.TextBackground(TerrColor[t - 1]);
+                        if (TerrColor[t - 1] == Crt.Color.White)
                         {
                             Crt.TextColor(Crt.Color.LightCyan);
                         }
@@ -1288,7 +1293,7 @@ public class texmaps
                     }
                 }
 
-                Crt.Write(TerrChar[t]);
+                Crt.Write(TerrChar[t - 1]);
             }
             else
             {
@@ -1317,7 +1322,7 @@ public class texmaps
         if (pov.m == null)
             return false;
 
-        if (TerrObscurement[terr] == -1)
+        if (TerrObscurement[terr - 1] == -1)
             return true;
 
         return false;

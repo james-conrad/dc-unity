@@ -353,12 +353,12 @@ class charts
         //{Add some random monsters to the map, if appropriate.}
 
 	    //{Decide how many random generations we're gonna perform.}
-	    int N = critter.NumberOfCritters(SC.CList);
+	    int N = critters.NumberOfCritters(SC.CList);
         if (N >= MaxMonsters)
             return;
 
         int Gen = 0;
-	    if (critter.NumberOfCritters(SC.CList) < MaxMonsters / 2)
+	    if (critters.NumberOfCritters(SC.CList) < MaxMonsters / 2)
             Gen = rpgtext.CHART_NumGenerations + rpgdice.rng.Next(rpgtext.CHART_NumGenerations);
 	    else
             Gen = rpgdice.rng.Next(rpgtext.CHART_NumGenerations) + 1;
@@ -369,7 +369,7 @@ class charts
 
 		    //{Check to see if there is any room for more monsters.}
 		    //{The more monsters we have, the less likely we are to add more.}
-		    if (critter.NumberOfCritters(SC.CList) < rpgdice.rng.Next(MaxMonsters / 2) + (MaxMonsters / 2) + 1)
+		    if (critters.NumberOfCritters(SC.CList) < rpgdice.rng.Next(MaxMonsters / 2) + (MaxMonsters / 2) + 1)
             {
                 //{Roll on the random monster chart.}
                 //{ First decide what chart to use. Either pick a chart }
@@ -449,12 +449,12 @@ class charts
 				    //{Otherwise, just forget it.}
 				    if (GoodSpot(SC, X, Y))
                     {
-					    critter.Critter C = critter.AddCritter(ref SC.CList, SC.gb, WanderChart[Chart - 1, E, 0], X, Y);
+					    critters.Critter C = critters.AddCritter(ref SC.CList, SC.gb, WanderChart[Chart - 1, E, 0], X, Y);
 
 					    //{Check to see whether the monster is equipped with a weapon.}
-					    if (C != null && critter.MonMan[C.crit - 1].EType > 0 && rpgdice.rng.Next(100) < critter.MonMan[C.crit - 1].EChance)
+					    if (C != null && critters.MonMan[C.crit - 1].EType > 0 && rpgdice.rng.Next(100) < critters.MonMan[C.crit - 1].EChance)
                         {
-						    C.Eqp = GenerateItem(SC, critter.MonMan[C.crit - 1].EType);
+						    C.Eqp = GenerateItem(SC, critters.MonMan[C.crit - 1].EType);
 					    }
 				    }
 			    }
