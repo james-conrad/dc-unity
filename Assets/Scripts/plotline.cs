@@ -46,7 +46,10 @@ public class plotline
         "MS5 <Print Reliquary3>",
         "msgRELIQUARY1 <A plaque on the door reads \"IN HOC SALUS\".>",
         "msgRELIQUARY2 <A plaque on the door reads \"MEMENTO MORI\".>",
-        "msgRELIQUARY3 <A plaque on the door reads \"TO THE FATHERS\".>"
+        "msgRELIQUARY3 <A plaque on the door reads \"TO THE FATHERS\".>",
+
+        "CHEATLEFT <GoLeft>",
+        "CHEATRIGHT <GoRight>",
     };
 
     public static void HandleTriggers(gamebook.Scenario SC)

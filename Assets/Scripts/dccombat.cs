@@ -1044,7 +1044,7 @@ class dccombat
             //{Do the damage.}
             if (TrapMan[Math.Abs(SC.gb.map[TX - 1, TY - 1].trap) - 1].DMG > 0)
             {
-                int D = rpgdice.RollStep(TrapMan[Math.Abs(SC.gb.map[TX - 1, TY - 1].trap)].DMG);
+                int D = rpgdice.RollStep(TrapMan[Math.Abs(SC.gb.map[TX - 1, TY - 1].trap) - 1].DMG);
 
                 AttackReport Rep = new AttackReport();
                 DamageTarget(SC, TX, TY, 4, AR, D, ref Rep);

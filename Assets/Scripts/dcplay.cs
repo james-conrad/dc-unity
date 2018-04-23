@@ -184,6 +184,20 @@ public class dcplay
                         Crt.Write(critters.NumberOfCritters(SC.CList).ToString());
                         dccombat.CritterDeath(SC, SC.CList, true);
                     }
+                    else if (a == '#')
+                    {
+                        rpgtext.DCGameMessage("Cheat Code Gamma!");
+                        Crt.GotoXY(1, 25);
+                        Crt.TextColor(Crt.Color.Yellow);
+                        gamebook.SetTrigger(SC, "CHEATRIGHT");
+                    }
+                    else if (a == '$')
+                    {
+                        rpgtext.DCGameMessage("Cheat Code Theta!");
+                        Crt.GotoXY(1, 25);
+                        Crt.TextColor(Crt.Color.Yellow);
+                        gamebook.SetTrigger(SC, "CHEATLEFT");
+                    }
                 }
                 while (!Act && PCCanAct(SC.PC));
                 SC.PC.lastCmd = a;

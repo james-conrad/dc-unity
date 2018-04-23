@@ -1759,11 +1759,11 @@ public class randmaps
             SC.Comps = SC.Frozen_Levels[N - 1].Comps;
 
             /*...then set the FROZEN records to null. */
-            SC.Frozen_Levels[N].gb = null;
-            SC.Frozen_Levels[N].ig = null;
-            SC.Frozen_Levels[N].PL = null;
-            SC.Frozen_Levels[N].CList = null;
-            SC.Frozen_Levels[N].Comps = null;
+            SC.Frozen_Levels[N-1].gb = null;
+            SC.Frozen_Levels[N-1].ig = null;
+            SC.Frozen_Levels[N-1].PL = null;
+            SC.Frozen_Levels[N-1].CList = null;
+            SC.Frozen_Levels[N-1].Comps = null;
         }
     }
 
