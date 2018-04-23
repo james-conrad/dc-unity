@@ -417,7 +417,7 @@ class rpgmenus
 
         foreach (string file in files)
         {
-            AddRPGMenuItem(menu, file, N);
+            AddRPGMenuItem(menu, Path.GetFileNameWithoutExtension(file), N);
             N += 1;
         }
     }

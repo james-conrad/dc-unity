@@ -65,21 +65,21 @@ public class looker
                 texmaps.DisplayTile(SC.gb, p.x, p.y);
             }
 
-            if (A == rpgtext.KMap[0].key)
+            if (A == rpgtext.KMap[1].key)
                 MoveMapCursor(SC.gb, 1, ref p);
-            else if (A == rpgtext.KMap[1].key)
-                MoveMapCursor(SC.gb, 2, ref p);
             else if (A == rpgtext.KMap[2].key)
-                MoveMapCursor(SC.gb, 3, ref p);
+                MoveMapCursor(SC.gb, 2, ref p);
             else if (A == rpgtext.KMap[3].key)
+                MoveMapCursor(SC.gb, 3, ref p);
+            else if (A == rpgtext.KMap[4].key)
                 MoveMapCursor(SC.gb, 4, ref p);
-            else if (A == rpgtext.KMap[5].key)
-                MoveMapCursor(SC.gb, 6, ref p);
             else if (A == rpgtext.KMap[6].key)
-                MoveMapCursor(SC.gb, 7, ref p);
+                MoveMapCursor(SC.gb, 6, ref p);
             else if (A == rpgtext.KMap[7].key)
-                MoveMapCursor(SC.gb, 8, ref p);
+                MoveMapCursor(SC.gb, 7, ref p);
             else if (A == rpgtext.KMap[8].key)
+                MoveMapCursor(SC.gb, 8, ref p);
+            else if (A == rpgtext.KMap[9].key)
                 MoveMapCursor(SC.gb, 9, ref p);
             else if (A == (char)9)
             { 
@@ -91,7 +91,7 @@ public class looker
                 }
             }
         }
-        while (A != ' ' && A != (char)27 && A != rpgtext.KMap[13].key && A != rpgtext.KMap[14].key);
+        while (A != ' ' && A != (char)27 && A != rpgtext.KMap[14].key && A != rpgtext.KMap[15].key);
 
         if (A == (char)27)
             p.x = -1;

@@ -45,12 +45,12 @@ public class ConsoleRenderer : MonoBehaviour
     {
         Color.cyan,
         Color.black,
-        Color.blue,
+        new Color(0.04f, 0.1f, 0.9f),
         new Color(0.54f, 0.27f, 0.07f),
 
         new Color(0.23f, 0.25f, 0.31f),
         new Color(0.1f, 0.65f, 0.0f),
-        new Color(0.1f, 0.2f, 1.0f),
+        new Color(0.3f, 0.25f, 1.0f),
         new Color(0.2f, 0.9f, 1.0f),
 
         new Color(0.63f, 0.65f, 0.7f),   

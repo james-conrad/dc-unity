@@ -243,9 +243,9 @@ public class texfx
         //{Do an electrocution effect at the desired point.}
         for (int t = 1; t <= 5; ++t)
         {
-            texmaps.MapSplat(gb, 'X', PikaColor[rpgdice.rng.Next(5)], X, Y, false);
+            texmaps.MapSplat(gb, 'X', PikaColor[rpgdice.Random(5)], X, Y, false);
             DelayDiv(2);
-            texmaps.MapSplat(gb, '%', PikaColor[rpgdice.rng.Next(5)], X, Y, false);
+            texmaps.MapSplat(gb, '%', PikaColor[rpgdice.Random(5)], X, Y, false);
             DelayDiv(2);
         }
 

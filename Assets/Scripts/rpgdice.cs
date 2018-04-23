@@ -8,6 +8,22 @@ public class rpgdice
 {
     public static Random rng = new Random();
 
+    public static int Random(int upperBound)
+    {
+        if (upperBound <= 0)
+            return 0;
+
+        return rng.Next(upperBound);
+    }
+
+    public static int Random(int lowerBound, int upperBound)
+    {
+        if (upperBound <= lowerBound)
+            return lowerBound;
+
+        return rng.Next(lowerBound, upperBound);
+    }
+
     static int[] DieSize = { 4, 6, 8, 10, 12 };
     static int[][] DieStep = {
         //        {  d4  d6  d8 d10 d12 }

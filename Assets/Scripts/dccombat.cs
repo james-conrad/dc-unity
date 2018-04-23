@@ -175,7 +175,7 @@ class dccombat
             if (critters.MonMan[C.crit - 1].TType > 0)
             {
                 int N = 0;
-                while (N < critters.MonMan[C.crit - 1].TNum && rpgdice.rng.Next(100) < critters.MonMan[C.crit - 1].TDrop)
+                while (N < critters.MonMan[C.crit - 1].TNum && rpgdice.Random(100) < critters.MonMan[C.crit - 1].TDrop)
                 {
                     N += 1;
                     dcitems.DCItem I = charts.GenerateItem(SC, critters.MonMan[C.crit - 1].TType);
@@ -184,7 +184,7 @@ class dccombat
             }
         }
 
-        if (C.Eqp != null && rpgdice.rng.Next(100) < CDropEqp)
+        if (C.Eqp != null && rpgdice.Random(100) < CDropEqp)
         {
             //{The critter dropped whatever it was carrying.}
             dcitems.PlaceDCItem(SC.gb, SC.ig, C.Eqp, C.M.x, C.M.y);
@@ -307,7 +307,7 @@ class dccombat
         {
             if (DMG < OriginalDamage)
                 DMG = OriginalDamage;
-            DMG *= 2 + rpgdice.rng.Next(3);
+            DMG *= 2 + rpgdice.Random(3);
         }
 
         //{Reduce damage for armor, and increase it for condition.}
@@ -560,7 +560,7 @@ class dccombat
             else
                 msg = "Something";
 
-            if (AR.Desc != "" && rpgdice.rng.Next(3) == 1)
+            if (AR.Desc != "" && rpgdice.Random(3) == 1)
             {
                 if (AR.Attacker.kind == dcchars.MKIND_Character)
                     msg = "You " + AR.Desc + " ";
@@ -590,7 +590,7 @@ class dccombat
         //{Add punctuation to our message string, then print.}
         if (msg.Length > 0)
         {
-            if (rpgdice.rng.Next(8) == 5)
+            if (rpgdice.Random(8) == 5)
                 msg += "... ";
             else if (ARoll > 50)
                 msg += "!!! ";
@@ -600,7 +600,7 @@ class dccombat
                 msg += ". ";
             else
             {
-                if (rpgdice.rng.Next(5) == 1)
+                if (rpgdice.Random(5) == 1)
                     msg += "? ";
                 else
                     msg += ", sort of... ";
@@ -625,7 +625,7 @@ class dccombat
                 MOS = (ARoll - 10) / 5;
 
             //{Determine Damage Bonus}
-            int DBonus = rpgdice.rng.Next(MOS + 1);
+            int DBonus = rpgdice.Random(MOS + 1);
             MOS -= DBonus;
             if (MOS > 4)
             {
@@ -642,7 +642,7 @@ class dccombat
         {
             //{ The attack missed!Again, do whatever needs to be done...}
             Rep.ItHit = false;
-            if (rpgdice.rng.Next(3) == 2 && TVis)
+            if (rpgdice.Random(3) == 2 && TVis)
                 msg += tname + " dodged the attack.";
             else if (msg.Length > 0)
                 msg += "The attack missed.";
@@ -835,8 +835,8 @@ class dccombat
             int X = texmaps.Range(AR.Attacker, AR.TX, AR.TY) / 2;
             if (X < 2)
                 X = 2;
-            AR.TX += rpgdice.rng.Next(X) - rpgdice.rng.Next(X);
-            AR.TY += rpgdice.rng.Next(X) - rpgdice.rng.Next(X);
+            AR.TX += rpgdice.Random(X) - rpgdice.Random(X);
+            AR.TY += rpgdice.Random(X) - rpgdice.Random(X);
         }
 
         //{Check to make sure our grenade isn't trying to bounce through a wall.}
@@ -972,8 +972,8 @@ class dccombat
             int X = texmaps.Range(AR.Attacker, AR.TX, AR.TY) / 2;
             if (X < 2)
                 X = 2;
-            AR.TX += rpgdice.rng.Next(X) - rpgdice.rng.Next(X);
-            AR.TY += rpgdice.rng.Next(X) - rpgdice.rng.Next(X);
+            AR.TX += rpgdice.Random(X) - rpgdice.Random(X);
+            AR.TY += rpgdice.Random(X) - rpgdice.Random(X);
             Rep.ItHit = false;
         }
 

@@ -573,7 +573,7 @@ public class backpack
             {
                 /*One cannister reloads the weapon to full capacity.*/
                 gun.charge = dcitems.CGuns[gun.icode].magazine;
-                if (rpgdice.rng.Next(10) == 7)
+                if (rpgdice.Random(10) == 7)
                     rpgtext.DCAppendMessage(" Ready to cook.");
                 if (ID)
                     gun.state = spec;

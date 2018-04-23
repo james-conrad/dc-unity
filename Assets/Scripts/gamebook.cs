@@ -304,6 +304,7 @@ public class gamebook
         //{Open the file.}
         FileStream file = File.Create("savegame/" + SC.PC.name + ".txt");
         StreamWriter f = new StreamWriter(file);
+        f.AutoFlush = true;
 
         //{Write the savefile version first of all.}
         f.WriteLine(SaveFileVersion);
@@ -363,7 +364,7 @@ public class gamebook
     {
         //{Load everything from disk and make sure that it's the}
         //{same as when it was saved.}
-        Scenario SC = new Scenario();
+        Scenario SC = NewScenario();
 
         Crt.Write("Loading...\n");
 
@@ -579,12 +580,12 @@ public class gamebook
         SC.PC.lvl += 1;
 
         //{Calculate the bonus HitPoints}
-        int P = dcchars.JobHitDie[SC.PC.job - 1] + rpgdice.rng.Next(dcchars.JobHitDie[SC.PC.job - 1]) + dcchars.PCHPBonus(SC.PC);
+        int P = dcchars.JobHitDie[SC.PC.job - 1] + rpgdice.Random(dcchars.JobHitDie[SC.PC.job - 1]) + dcchars.PCHPBonus(SC.PC);
         SC.PC.HPMax += P;
         SC.PC.HP += P;
 
         //{Calculate the bonus MojoPoints}
-        P = dcchars.JobMojoDie[SC.PC.job - 1] + rpgdice.rng.Next(dcchars.JobMojoDie[SC.PC.job - 1]) + dcchars.PCMPBonus(SC.PC);
+        P = dcchars.JobMojoDie[SC.PC.job - 1] + rpgdice.Random(dcchars.JobMojoDie[SC.PC.job - 1]) + dcchars.PCMPBonus(SC.PC);
         SC.PC.MPMax += P;
         SC.PC.MP += P;
 

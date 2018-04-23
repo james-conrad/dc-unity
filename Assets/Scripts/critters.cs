@@ -504,7 +504,7 @@ public class critters
 
 	    //{Calculate a HitPoint value for the monster. This should be}
 	    //{within +-20% of the normal maximum.}
-	    it.HP = MonMan[c-1].MaxHP * (100 + rpgdice.RollStep(7) - rpgdice.rng.Next(20)) / 100;
+	    it.HP = MonMan[c-1].MaxHP * (100 + rpgdice.RollStep(7) - rpgdice.Random(20)) / 100;
 	    if (it.HP < 1)
             it.HP = 1;
 

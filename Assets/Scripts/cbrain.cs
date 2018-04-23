@@ -2,64 +2,74 @@
 
 public class cbrain
 {
-	/*This unit handles critter behavior and stuff.*/
+    /*This unit handles critter behavior and stuff.*/
 
     public static void CritterAction(gamebook.Scenario SC, ref critters.Critter C)
     {
-	    /*Critter C is about to perform some sort of action. Yay!*/
-	    /*Decide what it's gonna do based on its AI type.*/
-	    SC.CAct = C;
-
-	    if (CritterActive(C))
+        if (C.HP < 0)
         {
-		    if (critters.MonMan[C.crit - 1].CT.Contains(critters.XCT_Breeder) && rpgdice.rng.Next(15) == 1)
+            Crt.Write("ERROR- We caught a dead critter acting..!\n");
+            do { rpgtext.RPGKey(); } while (true);
+        }
+
+        /*Critter C is about to perform some sort of action. Yay!*/
+        /*Decide what it's gonna do based on its AI type.*/
+        SC.CAct = C;
+
+        if (CritterActive(C))
+        {
+            if (critters.MonMan[C.crit - 1].CT.Contains(critters.XCT_Breeder) && rpgdice.Random(15) == 1)
             {
-			    TryToBreed(SC , C);
-		    }
+                TryToBreed(SC, C);
+            }
             else if (C.Target != null && C.AIType != critters.AIT_Slime)
             {
-			    ActAgressive(SC,C);
-		    }
+                ActAgressive(SC, C);
+            }
             else
             {
-			    switch (C.AIType)
+                switch (C.AIType)
                 {
-				    case critters.AIT_Passive: ActPassive(SC); break;
-				    case critters.AIT_PCHunter: ActPCHunter(SC,C); break;
-				    case critters.AIT_Chaos: ActChaos(SC,C); break;
-				    case critters.AIT_Guardian: ActGuardian(SC,C); break;
-				    case critters.AIT_Slime: ActSlimy(SC,C); break;
-				    case critters.AIT_HalfHunter: ActHalfHunter(SC,C); break;
-			    }
-		    }
-	    }
+                    case critters.AIT_Passive: ActPassive(SC); break;
+                    case critters.AIT_PCHunter: ActPCHunter(SC, C); break;
+                    case critters.AIT_Chaos: ActChaos(SC, C); break;
+                    case critters.AIT_Guardian: ActGuardian(SC, C); break;
+                    case critters.AIT_Slime: ActSlimy(SC, C); break;
+                    case critters.AIT_HalfHunter: ActHalfHunter(SC, C); break;
+                }
+            }
+        }
 
-	    /*Update the critter's status.*/
-	    if (plotbase.NAttValue(C.SF,statusfx.NAG_StatusChange,statusfx.SEF_Poison) != 0)
+        /* Protect against the creature already being dead here. */
+        if (SC.CAct != null)
         {
-		    C.HP -= rpgdice.rng.Next(6);
-	    }
+            /*Update the critter's status.*/
+            if (plotbase.NAttValue(C.SF, statusfx.NAG_StatusChange, statusfx.SEF_Poison) != 0)
+            {
+                C.HP -= rpgdice.Random(6);
+            }
 
-        statusfx.UpdateStatusList(ref C.SF);
+            statusfx.UpdateStatusList(ref C.SF);
 
-	    if (C.HP < 0)
-            dccombat.CritterDeath(SC,C,false);
+            if (C.HP < 0)
+                dccombat.CritterDeath(SC, C, false);
+        }
 
         C = SC.CAct;
-	    SC.CAct = null;
+        SC.CAct = null;
     }
 
     public static void BrownianMotion(gamebook.Scenario SC)
     {
-	    /*All of the clouds in the FOG section of the scenario are gonna*/
-	    /*drift around lonely as a cloud. Forcewalls are just gonna sit*/
-	    /*where they are.*/
-	    cwords.Cloud C = SC.Fog;
+        /*All of the clouds in the FOG section of the scenario are gonna*/
+        /*drift around lonely as a cloud. Forcewalls are just gonna sit*/
+        /*where they are.*/
+        cwords.Cloud C = SC.Fog;
 
-	    while (C != null)
+        while (C != null)
         {
-		    /*Save the location of the next cloud in the list.*/
-		    cwords.Cloud C2 = C.next;
+            /*Save the location of the next cloud in the list.*/
+            cwords.Cloud C2 = C.next;
 
             if (SC.ComTime >= C.Duration)
             {
@@ -67,20 +77,20 @@ public class cbrain
                 gamebook.Excommunicate(SC, C.M);
                 cwords.RemoveCloud(ref SC.Fog, C, SC.gb);
             }
-		    else if (cwords.CloudMan[C.Kind-1].pass)
+            else if (cwords.CloudMan[C.Kind - 1].pass)
             {
-			    /*Clouds which cannot be moved through are forcewalls,*/
-			    /*and stay where they're to. Other clouds drift.*/
-			    /*Do drifting now.*/
-			    if (rpgdice.rng.Next(3) != 1)
+                /*Clouds which cannot be moved through are forcewalls,*/
+                /*and stay where they're to. Other clouds drift.*/
+                /*Do drifting now.*/
+                if (rpgdice.Random(3) != 1)
                 {
-				    texmaps.MoveModel(C.M,SC.gb,C.M.x+rpgdice.rng.Next(2)-rpgdice.rng.Next(2),C.M.y+rpgdice.rng.Next(2)-rpgdice.rng.Next(2));
-			    }
-		    }
+                    texmaps.MoveModel(C.M, SC.gb, C.M.x + rpgdice.Random(2) - rpgdice.Random(2), C.M.y + rpgdice.Random(2) - rpgdice.Random(2));
+                }
+            }
 
-		    /*Move to the next cloud.*/
-		    C = C2;
-	    }
+            /*Move to the next cloud.*/
+            C = C2;
+        }
     }
 
     public static int AvoidTrapTarget = 15;	/*Avoiding traps is easier for critters.*/
@@ -90,21 +100,21 @@ public class cbrain
         /*Move the monster to wherever it's going. NOTE: C might be*/
         /*made null by this static void, if killed by a trap!*/
 
-	    texmaps.WalkReport it;
+        texmaps.WalkReport it;
 
-	    /*Is there a door in the way? If so, forget movement... Open*/
-	    /*the door instead. If the monster can't open the door, attack*/
-	    /*it and maybe it'll be destroyed.*/
+        /*Is there a door in the way? If so, forget movement... Open*/
+        /*the door instead. If the monster can't open the door, attack*/
+        /*it and maybe it'll be destroyed.*/
 
-	    /*Perform the movement.*/
-	    it = texmaps.MoveModel(SC.CAct.M,SC.gb,SC.CAct.M.x + DX,SC.CAct.M.y + DY);
-	    if (it.go && !SC.CAct.Spotted)
+        /*Perform the movement.*/
+        it = texmaps.MoveModel(SC.CAct.M, SC.gb, SC.CAct.M.x + DX, SC.CAct.M.y + DY);
+        if (it.go && !SC.CAct.Spotted)
         {
-		    if (texmaps.TileLOS(SC.gb.POV, SC.CAct.M.x,SC.CAct.M.y) && texmaps.OnTheScreen(SC.gb, SC.CAct.M.x, SC.CAct.M.y))
+            if (texmaps.TileLOS(SC.gb.POV, SC.CAct.M.x, SC.CAct.M.y) && texmaps.OnTheScreen(SC.gb, SC.CAct.M.x, SC.CAct.M.y))
             {
-			    gamebook.UpdateMonsterMemory(SC, SC.CAct);
-		    }
-	    }
+                gamebook.UpdateMonsterMemory(SC, SC.CAct);
+            }
+        }
 
         /*Check for traps here. Robots & Zombies don't set off traps;*/
         /*other critter types might.*/
@@ -127,7 +137,7 @@ public class cbrain
         if (texmaps.Range(C.M, SC.PC.m) > critters.MonMan[C.crit - 1].Sense * 2)
             return false;
 
-	    int O = texmaps.CalcObscurement(C.M,SC.PC.m,SC.gb);
+        int O = texmaps.CalcObscurement(C.M, SC.PC.m, SC.gb);
         if (O > -1)
         {
             if (rpgdice.RollStep(dcchars.PCStealth(SC.PC)) < rpgdice.RollStep(critters.MonMan[C.crit - 1].Sense) - O)
@@ -151,7 +161,7 @@ public class cbrain
 		    it = texmodel.FindModelXY(SC.gb.mlist,X,Y).coHab;
 	    }
 
-	    if (texmaps.TerrPass[SC.gb.map[X-1,Y-1].terr -1] < 1)
+	    if (texmaps.TerrPass[SC.gb.map[X-1,Y-1].terr - 1] < 1)
         {
             it = false;
         }
@@ -221,15 +231,15 @@ public class cbrain
     static void ActPassive(gamebook.Scenario SC)
     {
 	    /*The critter is gonna be acting passively right now.*/
-	    /*Move it in a rpgdice.rng.Next direction; don't attack anything.*/
-	    int D = rpgdice.rng.Next(9) + 1;
+	    /*Move it in a rpgdice.Random direction; don't attack anything.*/
+	    int D = rpgdice.Random(9) + 1;
 
 	    if (D != 5)
         {
 		    int t = 1;
 		    while (!MoveOK(SC,SC.CAct.M.x+texmaps.VecDir[D-1, 0], SC.CAct.M.y + texmaps.VecDir[D - 1, 1]) && t <= 3)
             {
-			    D = rpgdice.rng.Next(8) + 1;
+			    D = rpgdice.Random(8) + 1;
 			    if (D > 4)
                     D = D + 1;
                 t += 1;
@@ -253,7 +263,7 @@ public class cbrain
 
 	    /*Next, on a random whim, check to make sure the target is*/
 	    /*still visible.*/
-	    if (rpgdice.rng.Next(3) == 1  && C.Target == SC.PC.m && !C.Spotted)
+	    if (rpgdice.Random(3) == 1  && C.Target == SC.PC.m && !C.Spotted)
         {
 		    int O = texmaps.CalcObscurement(C.M,C.Target,SC.gb);
 		    if (O == -1 || O > critters.MonMan[C.crit - 1].Sense)
@@ -263,7 +273,7 @@ public class cbrain
                 return;
 		    }
 	    }
-        else if (rpgdice.rng.Next(10) == 3)
+        else if (rpgdice.Random(10) == 3)
         {
 		    if (C.HP >= critters.MonMan[C.crit - 1].MaxHP)
             {
@@ -278,7 +288,7 @@ public class cbrain
 	    }
 
 	    /*Check to see whether or not our critter is gonna try a missile attack.*/
-	    if (TacRange(C) > 0 && rpgdice.rng.Next(2) == 1 && texmaps.CalcObscurement(C.M,C.Target,SC.gb) > -1)
+	    if (TacRange(C) > 0 && rpgdice.Random(2) == 1 && texmaps.CalcObscurement(C.M,C.Target,SC.gb) > -1)
         {
 		    /* In addition to the above qualifiers, the critter will */
 		    /* only use a missile attack if its target is within visual */
@@ -312,7 +322,7 @@ public class cbrain
             {
                 if (MoveOK(SC, C.M.x + DX, C.M.y)) DY = 0;
                 else if (MoveOK(SC, C.M.x, C.M.y + DY)) DX = 0;
-                else if (rpgdice.rng.Next(2) == 1)
+                else if (rpgdice.Random(2) == 1)
                 {
                     ActPassive(SC);
                     return;
@@ -369,13 +379,13 @@ public class cbrain
 
 	    /*Determine a direction to move in. We don't want dir 5*/
 	    /*to be a valid choice.*/
-	    int D = rpgdice.rng.Next(8) + 1;
+	    int D = rpgdice.Random(8) + 1;
 	    if (D > 4) D += 1;
 
 	    int t = 1;
 	    while (texmaps.TerrPass[SC.gb.map[C.M.x + texmaps.VecDir[D-1,0] - 1, C.M.y + texmaps.VecDir[D-1 ,1] - 1].terr - 1] < 1 && t <= 3)
         {
-		    D = rpgdice.rng.Next(8) + 1;
+		    D = rpgdice.Random(8) + 1;
 		    if (D > 4) D += 1;
             t += 1;
 	    }
@@ -391,7 +401,7 @@ public class cbrain
 		    /*checking this and making alliances, assume that any*/
 		    /*two models using the same letter to represent them*/
 		    /*are friendly.*/
-		    if (WR.m.kind == critters.MKIND_Critter && WR.m.gfx == C.M.gfx && rpgdice.rng.Next(100) != 23)
+		    if (WR.m.kind == critters.MKIND_Critter && WR.m.gfx == C.M.gfx && rpgdice.Random(100) != 23)
             {
 			    if (texmaps.TileLOS(SC.gb.POV, C.M.x, C.M.y) && texmaps.OnTheScreen(SC.gb,C.M.x,C.M.y))
                 {
@@ -400,7 +410,7 @@ public class cbrain
 		    }
             else if (WR.m.kind == dcchars.MKIND_Character || WR.m.kind == critters.MKIND_Critter)
             {
-			    if (rpgdice.rng.Next(8) != 5)
+			    if (rpgdice.Random(8) != 5)
                     C.Target = WR.m;
 
 			    CritterAttack(SC,C,WR.m.x, WR.m.y);
@@ -414,7 +424,7 @@ public class cbrain
 
 	    /*The guardian may try to acquire a target, or may remain in*/
 	    /*standby mode.*/
-	    if (rpgdice.rng.Next(10) == 1)
+	    if (rpgdice.Random(10) == 1)
         {
 		    /*Try to acquire a target.*/
 		    for (int X = C.M.x - critters.MonMan[C.crit - 1].Sense; X <= C.M.x + critters.MonMan[C.crit - 1].Sense; ++X)
@@ -430,7 +440,7 @@ public class cbrain
 					    }
                         else if (M.kind == critters.MKIND_Critter)
                         {
-                            if (M.gfx != C.M.gfx && rpgdice.rng.Next(3) == 1 && texmaps.CalcObscurement(C.M, M, SC.gb) > -1)
+                            if (M.gfx != C.M.gfx && rpgdice.Random(3) == 1 && texmaps.CalcObscurement(C.M, M, SC.gb) > -1)
                             {
                                 C.Target = M;
                             }
@@ -443,9 +453,9 @@ public class cbrain
 	    if (C.Target != null)
             ActAgressive(SC,C);
 
-        if (rpgdice.rng.Next(5) == 3)
+        if (rpgdice.Random(5) == 3)
             ActChaos(SC, C);
-        else if (rpgdice.rng.Next(3) == 2)
+        else if (rpgdice.Random(3) == 2)
             ActPassive(SC);
 
 	    /*Else, just sit there and do nothing.*/
@@ -459,11 +469,11 @@ public class cbrain
 
     static void SlimeDoNothing(gamebook.Scenario SC, critters.Critter C)
     {
-        if (rpgdice.rng.Next(64) == 9)
+        if (rpgdice.Random(64) == 9)
         {
             if (texmaps.TileLOS(SC.gb.POV, C.M.x, C.M.y) && texmaps.OnTheScreen(SC.gb, C.M.x, C.M.y))
             {
-                rpgtext.DCGameMessage(critters.MonMan[C.crit - 1].name + " " + SlimeAct[rpgdice.rng.Next(5)]);
+                rpgtext.DCGameMessage(critters.MonMan[C.crit - 1].name + " " + SlimeAct[rpgdice.Random(5)]);
             }
         }
     }
@@ -515,7 +525,7 @@ public class cbrain
 	    }
 
 	    /*The slime hasn't got a target. Just lash out at anything nearby!*/
-	    int D = rpgdice.rng.Next(8) + 1;
+	    int D = rpgdice.Random(8) + 1;
         if (D > 4) D += 1;
         if (texmodel.ModelPresent(SC.gb.mog, C.M.x + texmaps.VecDir[D - 1, 0], C.M.y + texmaps.VecDir[D - 1, 1]))
         {
@@ -536,7 +546,7 @@ public class cbrain
     {
         /*This one is easy. Make a random roll, then branch to*/
         /*a different static void.*/
-        if (rpgdice.rng.Next(2) == 1)
+        if (rpgdice.Random(2) == 1)
             ActPCHunter(SC, C);
         else
             ActChaos(SC, C); ;
@@ -552,7 +562,7 @@ public class cbrain
         {
 		    /* Determine a direction in which to generate the new */
 		    /* monster. The direction can't be "5". */
-		    int D = rpgdice.rng.Next( 8 ) + 1;
+		    int D = rpgdice.Random( 8 ) + 1;
             if (D > 4) D += 1;
 		    int X = C.M.x + texmaps.VecDir[D - 1, 0];
 		    int Y = C.M.y + texmaps.VecDir[D - 1, 1];

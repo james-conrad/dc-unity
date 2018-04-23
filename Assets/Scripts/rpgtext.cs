@@ -46,7 +46,8 @@ public class rpgtext
         public bool used;
     }
 
-    public static TexDesc[] TexMan =
+    public const int NumTex = 29;
+    public static TexDesc[] TexMan = new TexDesc[NumTex]
     {
         new TexDesc(
             "06/18/64 WARNING - SIDNEY JAMES WARNER",
@@ -204,6 +205,7 @@ public class rpgtext
 
     public static GKeyDesc[] KMap = new GKeyDesc[]
     {
+        new GKeyDesc('-', "NOPENOPE",     "FAKEFAKEFAKE"),
         new GKeyDesc('1', "SouthWest",    "Movement key."),
         new GKeyDesc('2', "South",        "Movement key."),
         new GKeyDesc('3', "SouthEast",    "Movement key."),
@@ -324,19 +326,19 @@ public class rpgtext
                 break;
             case Key.Type.ARROW_UP:
                 //c = (char)72; //{Up Cursor Key}
-                c = KMap[7].key;
+                c = KMap[8].key;
                 break;
             case Key.Type.ARROW_DOWN:
                 //c = (char)80; //{Down Cursor Key}
-                c = KMap[1].key;
+                c = KMap[2].key;
                 break;
             case Key.Type.ARROW_LEFT:
                 //c = (char)75; //{Left Cursor Key}
-                c = KMap[3].key;
+                c = KMap[4].key;
                 break;
             case Key.Type.ARROW_RIGHT:
                 //c = (char)77; //{Right Cursor Key}
-                c = KMap[5].key;
+                c = KMap[6].key;
                 break;
             case Key.Type.ESC:
                 c = (char)27;
@@ -365,15 +367,15 @@ public class rpgtext
         //{ Input a keypress. }
         char k = RPGKey();
 
-        if (k == KMap[0].key) return 1;
-        else if (k == KMap[1].key) return 2;
-        else if (k == KMap[2].key) return 3;
-        else if (k == KMap[3].key) return 4;
-        else if (k == KMap[4].key) return 5;
-        else if (k == KMap[5].key) return 6;
-        else if (k == KMap[6].key) return 7;
-        else if (k == KMap[7].key) return 8;
-        else if (k == KMap[8].key) return 9;
+        if (k == KMap[1].key) return 1;
+        else if (k == KMap[2].key) return 2;
+        else if (k == KMap[3].key) return 3;
+        else if (k == KMap[4].key) return 4;
+        else if (k == KMap[5].key) return 5;
+        else if (k == KMap[6].key) return 6;
+        else if (k == KMap[7].key) return 7;
+        else if (k == KMap[8].key) return 8;
+        else if (k == KMap[9].key) return 9;
         else return 0;
     }
 
@@ -676,7 +678,7 @@ public class rpgtext
         //{ Set up the key map for this game.}
 
         //{ Set the default keys for all commands.}
-        for (int i = 0; i < KMap.Length; ++i)
+        for (int i = 1; i < KMap.Length; ++i)
         {
             KMap[i].key = KMap[i].dkey;
         }
@@ -701,7 +703,7 @@ public class rpgtext
                 string cmd = words[0].ToUpper();
 
                 //{ Check to see if CMD is one of the standard keys.}
-                for (int i = 0; i < KMap.Length; ++i)
+                for (int i = 1; i < KMap.Length; ++i)
                 {
                     if (KMap[i].name.ToUpper() == cmd)
                     {

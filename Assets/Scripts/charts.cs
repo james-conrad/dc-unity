@@ -282,12 +282,12 @@ class charts
 
     public static dcitems.DCItem GenerateItem(gamebook.Scenario SC, int TT)
     {
-	    //{Generate a random item from chart TT.}
-	    //{ The ScenarioPtr is used for the PC's tech skill, to see if items }
-	    //{ start out identified or not. }
+        //{Generate a random item from chart TT.}
+        //{ The ScenarioPtr is used for the PC's tech skill, to see if items }
+        //{ start out identified or not. }
 
-	    //{Decide which chart entry will be generated.}
-	    int R = rpgdice.rng.Next(NumTChance) + 1;
+        //{Decide which chart entry will be generated.}
+        int R = rpgdice.Random(NumTChance) + 1;
 
         //{If the ICode listed in -1, jump instead to a different}
         //{item list, as indicated by the IKind field. Normally}
@@ -310,7 +310,7 @@ class charts
             if (TTChart[TT - 1, R - 1, 2] == 0)
                 i.charge = 0;
             else
-                i.charge = rpgdice.rng.Next(TTChart[TT - 1, R - 1, 2]) + 1;
+                i.charge = rpgdice.Random(TTChart[TT - 1, R - 1, 2]) + 1;
         }
         else
         {
@@ -320,13 +320,13 @@ class charts
             //{Drop 999 bananas.}
             i = new dcitems.DCItem();
 
-			i.ikind = dcitems.IKIND_Food;
-			i.icode = 6;
-			i.charge = 999;
-	    }
+            i.ikind = dcitems.IKIND_Food;
+            i.icode = 6;
+            i.charge = 999;
+        }
 
-	    //{ Finally, see whether or not the item is identified by the PC. }
-	    AttemptToIdentify( SC , i );
+        //{ Finally, see whether or not the item is identified by the PC. }
+        AttemptToIdentify(SC, i);
 
         return i;
     }
@@ -352,40 +352,40 @@ class charts
     {
         //{Add some random monsters to the map, if appropriate.}
 
-	    //{Decide how many random generations we're gonna perform.}
-	    int N = critters.NumberOfCritters(SC.CList);
+        //{Decide how many random generations we're gonna perform.}
+        int N = critters.NumberOfCritters(SC.CList);
         if (N >= MaxMonsters)
             return;
 
         int Gen = 0;
-	    if (critters.NumberOfCritters(SC.CList) < MaxMonsters / 2)
-            Gen = rpgtext.CHART_NumGenerations + rpgdice.rng.Next(rpgtext.CHART_NumGenerations);
-	    else
-            Gen = rpgdice.rng.Next(rpgtext.CHART_NumGenerations) + 1;
+        if (critters.NumberOfCritters(SC.CList) < MaxMonsters / 2)
+            Gen = rpgtext.CHART_NumGenerations + rpgdice.Random(rpgtext.CHART_NumGenerations);
+        else
+            Gen = rpgdice.Random(rpgtext.CHART_NumGenerations) + 1;
 
         while (Gen > 0)
         {
             Gen -= 1;
 
-		    //{Check to see if there is any room for more monsters.}
-		    //{The more monsters we have, the less likely we are to add more.}
-		    if (critters.NumberOfCritters(SC.CList) < rpgdice.rng.Next(MaxMonsters / 2) + (MaxMonsters / 2) + 1)
+            //{Check to see if there is any room for more monsters.}
+            //{The more monsters we have, the less likely we are to add more.}
+            if (critters.NumberOfCritters(SC.CList) < rpgdice.Random(MaxMonsters / 2) + (MaxMonsters / 2) + 1)
             {
                 //{Roll on the random monster chart.}
                 //{ First decide what chart to use. Either pick a chart }
                 //{ based on PC level, or use the "signature chart" for }
                 //{ the currrent location. }
                 int Chart;
-                if (rpgdice.rng.Next(3) != 1)
+                if (rpgdice.Random(3) != 1)
                 {
                     //{ Pick chart based on level. }
-                    Chart = (rpgdice.rng.Next(SC.PC.lvl) / 3) + 1;
+                    Chart = (rpgdice.Random(SC.PC.lvl) / 3) + 1;
                 }
-			    else
+                else
                 {
-				    //{ The Signature Charts start at 1 and go down. }
-				    Chart = 2 - SC.Loc_Number;
-			    }
+                    //{ The Signature Charts start at 1 and go down. }
+                    Chart = 2 - SC.Loc_Number;
+                }
 
                 //{ Range check the selected chart... }
                 if (Chart > NumWChart)
@@ -393,19 +393,19 @@ class charts
                 else if (Chart < 1)
                     Chart = 1;
 
-			    //{ Roll the Entry and Number. }
-			    int E = rpgdice.rng.Next(NumWCT);
-			    N = rpgdice.rng.Next(WanderChart[Chart - 1, E, 1]) + 1;
+                //{ Roll the Entry and Number. }
+                int E = rpgdice.Random(NumWCT);
+                N = rpgdice.Random(WanderChart[Chart - 1, E, 1]) + 1;
 
-			    //{Decide upon a nice place to put our critters.}
-			    //{Select an origin spot - the generated critters will be centered here.}
-			    int X0 = rpgdice.rng.Next(texmodel.XMax)+1;
-			    int Y0 = rpgdice.rng.Next(texmodel.YMax)+1;
+                //{Decide upon a nice place to put our critters.}
+                //{Select an origin spot - the generated critters will be centered here.}
+                int X0 = rpgdice.Random(texmodel.XMax) + 1;
+                int Y0 = rpgdice.Random(texmodel.YMax) + 1;
 
-			    //{We're gonna give up if we can't find an appropriate}
-			    //{tile after 10,000 tries.}
-			    int tries = 0;
-			    while (texmaps.TerrPass[SC.gb.map[X0 - 1,Y0 - 1].terr - 1] < 1 &&  tries < 10000)
+                //{We're gonna give up if we can't find an appropriate}
+                //{tile after 10,000 tries.}
+                int tries = 0;
+                while (texmaps.TerrPass[SC.gb.map[X0 - 1, Y0 - 1].terr - 1] < 1 && tries < 10000)
                 {
                     X0 += 1;
                     tries += 0;
@@ -413,53 +413,53 @@ class charts
                     if (X0 > texmodel.XMax)
                     {
                         Y0 += 1;
-                        X0 = 0;
+                        X0 = 1;
                     }
                     if (Y0 > texmodel.YMax)
                     {
                         Y0 = 1;
                     }
-			    }
+                }
 
-			    for (int t = 1; t <= N; t++)
+                for (int t = 1; t <= N; t++)
                 {
-				    //{Starting position for the swarm is the origin determined earlier.}
-				    int X = X0;
-				    int Y = Y0;
+                    //{Starting position for the swarm is the origin determined earlier.}
+                    int X = X0;
+                    int Y = Y0;
 
-				    //{Check to see if this is an appropriate spot.}
-				    tries = 0;
-				    while (tries < 10 && !GoodSpot(SC, X,Y))
+                    //{Check to see if this is an appropriate spot.}
+                    tries = 0;
+                    while (tries < 10 && !GoodSpot(SC, X, Y))
                     {
                         tries += 1;
-                        X += rpgdice.rng.Next(3) - rpgdice.rng.Next(3);
+                        X += rpgdice.Random(3) - rpgdice.Random(3);
                         if (X < 1)
                             X = 1;
                         else if (X > texmodel.XMax)
                             X = texmodel.XMax;
 
-					    Y += rpgdice.rng.Next(3) - rpgdice.rng.Next(3);
+                        Y += rpgdice.Random(3) - rpgdice.Random(3);
                         if (Y < 1)
                             Y = 1;
                         else if (Y > texmodel.YMax)
                             Y = texmodel.YMax;
-				    }
+                    }
 
-				    //{If we have a good spot, render the monster.}
-				    //{Otherwise, just forget it.}
-				    if (GoodSpot(SC, X, Y))
+                    //{If we have a good spot, render the monster.}
+                    //{Otherwise, just forget it.}
+                    if (GoodSpot(SC, X, Y))
                     {
-					    critters.Critter C = critters.AddCritter(ref SC.CList, SC.gb, WanderChart[Chart - 1, E, 0], X, Y);
+                        critters.Critter C = critters.AddCritter(ref SC.CList, SC.gb, WanderChart[Chart - 1, E, 0], X, Y);
 
-					    //{Check to see whether the monster is equipped with a weapon.}
-					    if (C != null && critters.MonMan[C.crit - 1].EType > 0 && rpgdice.rng.Next(100) < critters.MonMan[C.crit - 1].EChance)
+                        //{Check to see whether the monster is equipped with a weapon.}
+                        if (C != null && critters.MonMan[C.crit - 1].EType > 0 && rpgdice.Random(100) < critters.MonMan[C.crit - 1].EChance)
                         {
-						    C.Eqp = GenerateItem(SC, critters.MonMan[C.crit - 1].EType);
-					    }
-				    }
-			    }
-		    }
-	    }
+                            C.Eqp = GenerateItem(SC, critters.MonMan[C.crit - 1].EType);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     static int IDTarget(dcitems.DCItem I)

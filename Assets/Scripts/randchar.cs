@@ -32,7 +32,7 @@ class randchar
         int CoP = dcchars.JobSchool[PC.job - 1];
         if (CoP == 0)
         {
-            CoP = rpgdice.rng.Next(1, spells.NumSchool + 1);
+            CoP = rpgdice.Random(1, spells.NumSchool + 1);
         }
 
         //{Keep selecting spells for as long as the PC needs to.}
@@ -101,7 +101,7 @@ class randchar
 
     static string Syl()
     {
-        return SyllableList[rpgdice.rng.Next(0, NumSyllables)];
+        return SyllableList[rpgdice.Random(0, NumSyllables)];
     }
 
     public static string RandomWorld()
@@ -112,25 +112,25 @@ class randchar
         string it = Syl() + Syl().ToLower();
 
         //{Uncommon names may have 3 syllables.}
-        if (rpgdice.rng.Next(3) == 1 && it.Length < 6)
+        if (rpgdice.Random(3) == 1 && it.Length < 6)
         {
             it += Syl().ToLower();
         }
-        else if (rpgdice.rng.Next(10) == 1)
+        else if (rpgdice.Random(10) == 1)
         {
             it += Syl().ToLower();
         }
 
         //{Short names may have a second part. This isn't common.}
-        if (it.Length < 8 && rpgdice.rng.Next(23) == 7)
+        if (it.Length < 8 && rpgdice.Random(23) == 7)
         {
             it += ' ' + Syl();
-            if (rpgdice.rng.Next(3) != 1)
+            if (rpgdice.Random(3) != 1)
                 it += Syl().ToLower();
         }
-        else if (rpgdice.rng.Next(15) > it.Length)
+        else if (rpgdice.Random(15) > it.Length)
         {
-            it += ' ' + DesigList[rpgdice.rng.Next(NumDesig)];
+            it += ' ' + DesigList[rpgdice.Random(NumDesig)];
         }
 
         return it;
@@ -177,7 +177,7 @@ class randchar
             Crt.TextColor(Crt.Color.White);
 
             //{Roll the character's stats.}
-            RollGHStats(PC, 100 + rpgdice.rng.Next(20));
+            RollGHStats(PC, 100 + rpgdice.Random(20));
             for (t = 1; t <= 8; ++t)
             {
                 //{display the stat onscreen.}
@@ -249,7 +249,7 @@ class randchar
             //{Set HP, HPMax, and other initial values.}
             PC.HPMax = PC.stat[dcchars.STAT_Toughness] + dcchars.JobHitDie[PC.job - 1] + dcchars.BaseHP;
             PC.HP = PC.HPMax;
-            PC.MPMax = PC.stat[dcchars.STAT_Willpower] / 2 + dcchars.JobMojoDie[PC.job - 1] + rpgdice.rng.Next(dcchars.JobMojoDie[PC.job - 1]);
+            PC.MPMax = PC.stat[dcchars.STAT_Willpower] / 2 + dcchars.JobMojoDie[PC.job - 1] + rpgdice.Random(dcchars.JobMojoDie[PC.job - 1]);
             PC.MP = PC.MPMax;
             PC.target = null;
             PC.carbs = 50;
@@ -273,29 +273,29 @@ class randchar
             {
                 dcitems.DCItem I = new dcitems.DCItem();
                 I.ikind = dcitems.IKIND_Food;
-                I.icode = JobXFood[PC.job, rpgdice.rng.Next(10)];
+                I.icode = JobXFood[PC.job, rpgdice.Random(10)];
                 I.charge = 1;
                 dcitems.MergeDCItem(ref PC.inv, I);
             }
 
             //{Add the PC's snacks.}
-            int total = rpgdice.rng.Next(5) + 1;
+            int total = rpgdice.Random(5) + 1;
             for (t = 1; t <= total; ++t)
             {
                 dcitems.DCItem I = new dcitems.DCItem();
                 I.ikind = dcitems.IKIND_Food;
 
                 //{Decide upon what kind of food to give, based on job.}
-                if (rpgdice.rng.Next(3) == 2)
+                if (rpgdice.Random(3) == 2)
                 {
-                    I.icode = JobXFood[0, rpgdice.rng.Next(10)];
+                    I.icode = JobXFood[0, rpgdice.Random(10)];
                 }
                 else
                 {
-                    I.icode = JobXFood[PC.job, rpgdice.rng.Next(10)];
+                    I.icode = JobXFood[PC.job, rpgdice.Random(10)];
                 }
 
-                I.charge = rpgdice.rng.Next(3) + 1;
+                I.charge = rpgdice.Random(3) + 1;
                 dcitems.MergeDCItem(ref PC.inv, I);
             }
 
@@ -602,19 +602,19 @@ class randchar
             {
                 //{Energy, napalm, and other special ammo weapons}
                 //{don't get as many reloads.}
-                I.charge = 3 + rpgdice.rng.Next(6);
+                I.charge = 3 + rpgdice.Random(6);
             }
             else if (it.icode == 9 || it.icode == 14)
             {
                 //{ Ammo for a shotgun. }
-                I.charge = dcitems.CGuns[it.icode - 1].magazine * 2 + rpgdice.rng.Next(10);
+                I.charge = dcitems.CGuns[it.icode - 1].magazine * 2 + rpgdice.Random(10);
             }
             else
             {
                 I.charge = dcitems.CGuns[it.icode - 1].magazine;
                 if (I.charge < 10)
                     I.charge = 10;
-                I.charge = (I.charge * 3) + rpgdice.rng.Next(20);
+                I.charge = (I.charge * 3) + rpgdice.Random(20);
             }
 
             dcitems.MergeDCItem(ref PC.inv, I);
@@ -625,7 +625,7 @@ class randchar
                 I = new dcitems.DCItem();
                 I.ikind = dcitems.IKIND_Ammo;
                 I.icode = 100 + dcitems.CGuns[it.icode - 1].caliber;
-                I.charge = dcitems.CGuns[it.icode - 1].magazine + rpgdice.rng.Next(10);
+                I.charge = dcitems.CGuns[it.icode - 1].magazine + rpgdice.Random(10);
                 dcitems.MergeDCItem(ref PC.inv, I);
             }
         }
@@ -648,7 +648,7 @@ class randchar
         //{ appropriate amount. }
 
         //{ Decide what item from the chart to generate. }
-        int N = rpgdice.rng.Next(10);
+        int N = rpgdice.Random(10);
 
         //{ Actually create the item record. }
         dcitems.DCItem I = new dcitems.DCItem();
@@ -693,7 +693,7 @@ class randchar
 
         //   { First, determine how many points the character will get }
         //{ for generation. }
-        int Pts = 25 + rpgdice.rng.Next(PC.stat[dcchars.STAT_Luck]);
+        int Pts = 25 + rpgdice.Random(PC.stat[dcchars.STAT_Luck]);
 
         //{ Generate the needed equipment - primary weapon, clothes, }
         //{ and shoes. }
@@ -709,7 +709,7 @@ class randchar
         GiveBasicStuff(PC);
 
         //{ Primary Weapon - decide which chart to use. }
-        int N = rpgdice.rng.Next(10);
+        int N = rpgdice.Random(10);
         PickItemFromChart(PC, PrimaryGear[PC.job - 1, N], ref Pts);
 
         //{ Clothes and Shoes }
@@ -719,14 +719,14 @@ class randchar
         //{ If there are points left over, give secondary equipment. }
         if (Pts > 0)
         {
-            N = rpgdice.rng.Next(10);
+            N = rpgdice.Random(10);
             PickItemFromChart(PC, SecondaryGear[PC.job - 1, N], ref Pts);
         }
 
         //{ Roll to see if this character gets gloves or a hat. }
-        if (Pts > 0 && rpgdice.rng.Next(100) < HatsChance[PC.job - 1])
+        if (Pts > 0 && rpgdice.Random(100) < HatsChance[PC.job - 1])
             PickItemFromChart(PC, HatsChart[PC.job - 1], ref Pts);
-        if (Pts > 0 && rpgdice.rng.Next(100) < GloveChance[PC.job - 1])
+        if (Pts > 0 && rpgdice.Random(100) < GloveChance[PC.job - 1])
             PickItemFromChart(PC, GloveChart[PC.job - 1], ref Pts);
 
         //{ Spend the remaining points on tertiary equipment. }
@@ -735,14 +735,14 @@ class randchar
             //{ Extra equipment has a 50% chance of coming from the }
             //{ job-specific chart and a 50% chance of coming from }
             //{ the general items chart. }
-            if (rpgdice.rng.Next(2) == 1)
+            if (rpgdice.Random(2) == 1)
             {
-                N = rpgdice.rng.Next(10);
+                N = rpgdice.Random(10);
                 PickItemFromChart(PC, ExtraGear[PC.job, N], ref Pts);
             }
             else
             {
-                N = rpgdice.rng.Next(10);
+                N = rpgdice.Random(10);
                 PickItemFromChart(PC, ExtraGear[0, N], ref Pts);
             }
         }
@@ -788,31 +788,31 @@ class randchar
 
         //{First, decide upon the form of the world. 90% will be planets.}
         int F = 0;
-        if (rpgdice.rng.Next(10) == 1)
+        if (rpgdice.Random(10) == 1)
         {
-            F = rpgdice.rng.Next(NumFrm);
+            F = rpgdice.Random(NumFrm);
         }
 
         //{Next, decide whether or not the world has a predominant}
         //{characteristic. 50% of planets don't have one.}
-        if (F == 0 && rpgdice.rng.Next(2) == 1)
+        if (F == 0 && rpgdice.Random(2) == 1)
         {
             //{no primary characteristic.}
             it = "a " + frm[F];
         }
         else
         {
-            if (F == 1 || rpgdice.rng.Next(3) == 1)
+            if (F == 1 || rpgdice.Random(3) == 1)
             {
-                it = fun[rpgdice.rng.Next(NumFun)] + " " + frm[F];
+                it = fun[rpgdice.Random(NumFun)] + " " + frm[F];
             }
             else
             {
-                it = eco[rpgdice.rng.Next(NumEco)] + " " + frm[F];
+                it = eco[rpgdice.Random(NumEco)] + " " + frm[F];
             }
         }
 
-        it += " in the " + loc[rpgdice.rng.Next(10)] + " Stellar March";
+        it += " in the " + loc[rpgdice.Random(10)] + " Stellar March";
 
         return it;
     }
@@ -840,32 +840,32 @@ class randchar
         string it = "";
 
         //{Decide which of the three paths the PC will take.}
-        int P = rpgdice.rng.Next(3);
+        int P = rpgdice.Random(3);
         if (P == 0)
         {
             //{Distress call}
             it = "While travelling to " + RandomWorld() + ", your ship recieved a distress call from space station Dead Cold.";
             if (PC.job == 4 || PC.job == 9)
             {
-                if (rpgdice.rng.Next(3) == 1)
+                if (rpgdice.Random(3) == 1)
                     it += Pir;
                 else
                     it += DCall;
             }
             else if (PC.job == 2 || PC.job == 5)
             {
-                if (rpgdice.rng.Next(3) == 1)
+                if (rpgdice.Random(3) == 1)
                     it += Mys;
                 else
                     it += DCall;
             }
             else
             {
-                if (rpgdice.rng.Next(20) == 7)
+                if (rpgdice.Random(20) == 7)
                 {
                     it += Mys;
                 }
-                else if (rpgdice.rng.Next(20) == 13)
+                else if (rpgdice.Random(20) == 13)
                 {
                     it += Pir;
                 }
@@ -879,12 +879,12 @@ class randchar
         {
             //{Accidental arrival}
             it = "While travelling to " + RandomWorld() + ", your ship ";
-            if (rpgdice.rng.Next(2) == 1)
+            if (rpgdice.Random(2) == 1)
             {
                 //{Attacked!}
-                it += "was attacked by " + Att[rpgdice.rng.Next(NumAtt)] + " and seriously damaged.";
+                it += "was attacked by " + Att[rpgdice.Random(NumAtt)] + " and seriously damaged.";
             }
-            else if (rpgdice.rng.Next(2) == 1)
+            else if (rpgdice.Random(2) == 1)
             {
                 //{Meteor!}
                 it += "was hit by a meteor.";
@@ -900,7 +900,7 @@ class randchar
         else
         {
             //{Purposeful arrival}
-            it = "You have come to Dead Cold bearing " + Car[rpgdice.rng.Next(NumCar)];
+            it = "You have come to Dead Cold bearing " + Car[rpgdice.Random(NumCar)];
         }
 
         return it;
@@ -977,7 +977,7 @@ class randchar
         while (Pts > 0)
         {
             //{ T will now point to the stat slot to improve. }
-            t = rpgdice.rng.Next(8);
+            t = rpgdice.Random(8);
 
             //{ If the stat selected is under the max value, }
             //{ improve it. If it is at or above the max value, }
@@ -987,7 +987,7 @@ class randchar
                 PC.stat[t] += 1;
                 Pts -= 1;
             }
-            else if (rpgdice.rng.Next(2) == 1)
+            else if (rpgdice.Random(2) == 1)
             {
                 PC.stat[t] += 1;
                 Pts -= 1;

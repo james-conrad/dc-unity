@@ -1060,7 +1060,7 @@ public class dcitems
                         return it;
                     }
                 case IKIND_Electronics:
-                    return ElecCat[i.icode].name;
+                    return ElecCat[i.icode - 1].name;
                 default:
                     return string.Format("kind: {0} /code:{1}", i.ikind, i.icode);
             }
@@ -1210,21 +1210,18 @@ public class dcitems
         int icode = int.Parse(f.ReadLine());
         while (icode != -1)
         {
-            if (icode != -1)
-            {
-                DCItem i = AddDCItem(ref ilist);
-                i.icode = icode;
+            DCItem i = AddDCItem(ref ilist);
+            i.icode = icode;
 
-                i.ikind = int.Parse(f.ReadLine());
-                i.charge = int.Parse(f.ReadLine());
-                i.state = int.Parse(f.ReadLine());
+            i.ikind = int.Parse(f.ReadLine());
+            i.charge = int.Parse(f.ReadLine());
+            i.state = int.Parse(f.ReadLine());
 
-                char C = char.Parse(f.ReadLine());
-                if (C == 'T')
-                    i.ID = true;
-                else
-                    i.ID = false;
-            }
+            char C = char.Parse(f.ReadLine());
+            if (C == 'T')
+                i.ID = true;
+            else
+                i.ID = false;
 
             icode = int.Parse(f.ReadLine());
         }
@@ -1265,6 +1262,7 @@ public class dcitems
             int y = int.Parse(f.ReadLine());
             IG.g[x - 1, y - 1] = ReadItemList(f);
             texmaps.SetOverImage(gb, x, y, ',', Crt.Color.LightBlue);
+            x = int.Parse(f.ReadLine());
         }
 
         return IG;

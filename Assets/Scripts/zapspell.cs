@@ -58,7 +58,7 @@ public class zapspell
             if (SC.PC.MP < 0)
                 SC.PC.MP = 0;
 
-            if (rpgdice.rng.Next(spells.SpellMan[S - 1].cost) < M)
+            if (rpgdice.Random(spells.SpellMan[S - 1].cost) < M)
             {
                 //{Fill in the SpellDesc record with spell data + PC stats}
                 spells.SpellDesc SD = spells.SpellMan[S - 1].Clone();
@@ -223,7 +223,7 @@ public class zapspell
                 if (texmaps.OnTheMap(X, Y))
                 {
                     //{Only terrain which is within the cutoff range may be sensed.}
-                    if (texmaps.TerrPass[texmaps.GetTerr(SC.gb, X, Y) - 1] >= S.p2 && rpgdice.rng.Next(100) < S.step)
+                    if (texmaps.TerrPass[texmaps.GetTerr(SC.gb, X, Y) - 1] >= S.p2 && rpgdice.Random(100) < S.step)
                     {
                         SC.gb.map[X, Y].visible = true;
                     }
@@ -279,7 +279,7 @@ public class zapspell
 
             //{Give the PC a few points for successfully using}
             //{this spell.}
-            gamebook.DoleExperience(SC, rpgdice.rng.Next(3));
+            gamebook.DoleExperience(SC, rpgdice.Random(3));
         }
         else
         {
@@ -332,12 +332,12 @@ public class zapspell
         int X, Y;
         do
         {
-            int D = rpgdice.rng.Next(8) + 1;
+            int D = rpgdice.Random(8) + 1;
             if (D > 4)
                 D += 1;
 
-            X = SC.PC.m.x + texmaps.VecDir[D - 1, 0] * S.step + rpgdice.rng.Next(5) - rpgdice.rng.Next(5);
-            Y = SC.PC.m.y + texmaps.VecDir[D - 1, 1] * S.step + rpgdice.rng.Next(5) - rpgdice.rng.Next(5);
+            X = SC.PC.m.x + texmaps.VecDir[D - 1, 0] * S.step + rpgdice.Random(5) - rpgdice.Random(5);
+            Y = SC.PC.m.y + texmaps.VecDir[D - 1, 1] * S.step + rpgdice.Random(5) - rpgdice.Random(5);
             Tries += 1;
         }
         while (!texmaps.OnTheMap(X, Y) && Tries < 5);
@@ -347,12 +347,12 @@ public class zapspell
             while (Tries < 1000 && !GoodSpot(SC, X, Y))
             {
                 Tries += 1;
-                X += rpgdice.rng.Next(10) - rpgdice.rng.Next(10);
+                X += rpgdice.Random(10) - rpgdice.Random(10);
                 if (X > texmodel.XMax)
                     X = texmodel.XMax;
                 else if (X < 1)
                     X = 1;
-                Y += rpgdice.rng.Next(10) - rpgdice.rng.Next(10);
+                Y += rpgdice.Random(10) - rpgdice.Random(10);
                 if (Y > texmodel.YMax)
                     Y = texmodel.YMax;
                 else if (Y < 1)

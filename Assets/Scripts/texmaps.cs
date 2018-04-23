@@ -645,7 +645,7 @@ public class texmaps
             //{Check the target square for terrain concerns.}
             if (it.go)
             {
-                if (rpgdice.rng.Next(1, 101) > TerrPass[GetTerr(gb, x, y) - 1])
+                if (rpgdice.Random(1, 101) > TerrPass[GetTerr(gb, x, y) - 1])
                 {
                     it.go = false;
                 }
@@ -669,6 +669,7 @@ public class texmaps
             {
                 UpdatePOV(gb.POV, gb);
                 ApplyPOV(gb.POV, gb);
+                texmaps.DisplayMap(gb);
             }
 
             //{Update the display}
@@ -787,15 +788,21 @@ public class texmaps
             p = SolveLine(x1, y1, x2, y2, t);
 
             //{Determine the terrain of this tile.}
-            int terr = GetTerr(gb, p.x, p.x);
+            int terr = GetTerr(gb, p.x, p.y);
 
             //{Update the Obscurement count.}
             O += TerrObscurement[terr - 1];
 
             //{Increase O for models in the way.}
             int mo = 0; //{Obscurement caused by an intervening model.}
-            if (texmodel.ModelPresent(gb.mog, p.x, p.x))
+            if (texmodel.ModelPresent(gb.mog, p.x, p.y))
             {
+                if (texmodel.FindModelXY(gb.mlist, p.x, p.y) == null)
+                {
+                    Crt.Write("ERROR- model grid out of sync..\n");
+                    do { rpgtext.RPGKey(); } while (true);
+                }
+
                 mo = texmodel.FindModelXY(gb.mlist, p.x, p.y).obs;
                 O += mo;
             }
@@ -1037,7 +1044,7 @@ public class texmaps
 
         while (p.y <= texmodel.YMax)
         {
-            if (gb.map[p.x - 1, p.y - 1].visible)
+            if (gb.map[p.x - 1, p.y - 1].visible == vis)
             {
                 C += 1;
             }
