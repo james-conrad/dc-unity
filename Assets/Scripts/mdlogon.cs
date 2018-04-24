@@ -442,12 +442,12 @@ public class mdlogon
 
     static void DoDescartes(gamebook.Scenario SC, cwords.MPU MP, int Sec)
     {
-	    /* The player is accessing primary server DESCARTES. */
+        /* The player is accessing primary server DESCARTES. */
 
-	    rpgmenus.RPGMenu RPM = rpgmenus.CreateRPGMenu(Crt.Color.Green, Crt.Color.Cyan, Crt.Color.Yellow , UCM_X1 + 2 , UCM_Y1 + 2 , UCM_X2 - 2 , UCM_Y2 - 2 );
-	    rpgmenus.AddRPGMenuItem( RPM , "Emergency Status" , 1 );
-        rpgmenus.AddRPGMenuItem( RPM , "Mail Core Memory" , 2 );
-        rpgmenus.AddRPGMenuItem( RPM , "Log Off" , -1 );
+        rpgmenus.RPGMenu RPM = rpgmenus.CreateRPGMenu(Crt.Color.Green, Crt.Color.Cyan, Crt.Color.Yellow, UCM_X1 + 2, UCM_Y1 + 2, UCM_X2 - 2, UCM_Y2 - 2);
+        rpgmenus.AddRPGMenuItem(RPM, "Emergency Status", 1);
+        rpgmenus.AddRPGMenuItem(RPM, "Mail Core Memory", 2);
+        rpgmenus.AddRPGMenuItem(RPM, "Log Off", -1);
 
         int N;
         do
@@ -461,7 +461,7 @@ public class mdlogon
             }
 
         }
-        while (N != -1 || MP.Attr[0] == 'X');
+        while (N != -1 && MP.Attr[0] != 'X');
     }
 
 
@@ -489,41 +489,41 @@ public class mdlogon
 
     static void AttemptHack(gamebook.Scenario SC, cwords.MPU MP, ref int Sec)
     {
-	    /* The player wants to hack this terminal. Give it a try, and hope */
-	    /* there are no disasterous results... */
-	    rpgtext.DCGameMessage( "Attempting to hack " + cwords.MPUMan[MP.kind - 1].name + "...");
+        /* The player wants to hack this terminal. Give it a try, and hope */
+        /* there are no disasterous results... */
+        rpgtext.DCGameMessage("Attempting to hack " + cwords.MPUMan[MP.kind - 1].name + "...");
 
-	    /* Do the animation for hacking. */
-	    Crt.Window( MCM_X1 + 1 , MCM_Y1 + 1 , MCM_X2 - 1 , MCM_Y2 - 1 );
-	    Crt.ClrScr();
-	    Crt.TextColor(Crt.Color.Blue);
-	    int N = rpgdice.Random(250) + 250;
+        /* Do the animation for hacking. */
+        Crt.Window(MCM_X1 + 1, MCM_Y1 + 1, MCM_X2 - 1, MCM_Y2 - 1);
+        Crt.ClrScr();
+        Crt.TextColor(Crt.Color.Blue);
+        int N = rpgdice.Random(250) + 250;
         for (int t = 1; t <= N; ++t)
             Crt.Write(rpgdice.Random(256).ToString("X2") + " ");
         texfx.Delay();
-	    N = rpgdice.Random(250) + 250;
-	    for (int t = 1; t <= N; ++t)
+        N = rpgdice.Random(250) + 250;
+        for (int t = 1; t <= N; ++t)
             Crt.Write(rpgdice.Random(256).ToString("X2") + " ");
-	    texfx.Delay();
+        texfx.Delay();
 
-	    /* Actually figure out if it worked. */
-	    int R = rpgdice.RollStep(dcchars.PCTechSkill(SC.PC));
-	    int T = Sec + cwords.MPUMan[MP.kind - 1].SecPass;
-	    if (R > cwords.MPUMan[MP.kind - 1].SecPass && R > T )
+        /* Actually figure out if it worked. */
+        int R = rpgdice.RollStep(dcchars.PCTechSkill(SC.PC));
+        int T = Sec + cwords.MPUMan[MP.kind - 1].SecPass;
+        if (R > cwords.MPUMan[MP.kind - 1].SecPass && R > T)
         {
-		    rpgtext.DCAppendMessage(" You did it.");
-		    Sec = R - cwords.MPUMan[MP.kind - 1].SecPass;
-	    }
+            rpgtext.DCAppendMessage(" You did it.");
+            Sec = R - cwords.MPUMan[MP.kind - 1].SecPass;
+        }
         else
         {
-		    rpgtext.DCAppendMessage(" You failed.");
-		    if (R < T - 5)
+            rpgtext.DCAppendMessage(" You failed.");
+            if (R < T - 5)
             {
-			    MP.Attr = "X" + MP.Attr;
-			    if (R < T - 10)
-                    gamebook.SetTrigger( SC , "ALARM");
-		    }
-	    }
+                MP.Attr = "X" + MP.Attr;
+                if (R < T - 10)
+                    gamebook.SetTrigger(SC, "ALARM");
+            }
+        }
     }
 
 }

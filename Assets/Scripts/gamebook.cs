@@ -229,12 +229,12 @@ public class gamebook
     //{*** GENERAL IO ROUTINES ***}
     public static void PCStatLine(Scenario SC)
     {
-        Crt.Window(1, 25, 79, 25);
+        Crt.Window(WDM.PCStat_X, WDM.PCStat_Y, WDM.PCStat_X2, WDM.PCStat_Y);
         Crt.ClrScr();
-        Crt.Window(1, 1, 80, 25);
+        Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
 
         //{Print data on status effects.}
-        Crt.GotoXY(2, 25);
+        Crt.GotoXY(WDM.PCStat_X, WDM.PCStat_Y);
         //{ First, if player is starving, show that. }
         if (SC.PC.carbs < 0)
         {

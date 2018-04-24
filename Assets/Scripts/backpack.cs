@@ -4,26 +4,7 @@ public class backpack
 {
 	/*This unit handles the PC's Inventory UI.*/
 
-	public const int EqpWin_X1 = 1;
-    public const int EqpWin_Y1 = 4;
-    public const int EqpWin_X2 = 50;
-    public const int EqpWin_Y2 = 11;
-
-    public const int DscWin_X1 = 52;
-    public const int DscWin_Y1 = 4;
-    public const int DscWin_X2 = 79;
-    public const int DscWin_Y2 = 15;
     public const Crt.Color DscColor = Crt.Color.LightGreen;
-
-	public const int InvWin_X1 = 1;
-    public const int InvWin_Y1 = 11;
-    public const int InvWin_X2 = 50;
-    public const int InvWin_Y2 = 24;
-
-    public const int PCSWin_X1 = 51;
-    public const int PCSWin_Y1 = 16;
-    public const int PCSWin_X2 = 80;
-    public const int PCSWin_Y2 = 20;
 
 	/*MenuKey Constants*/
 	public const char BMK_SwitchKey = '/';
@@ -36,18 +17,20 @@ public class backpack
     {
         /* The PC is about to use his HANDYMAP automatic mapping system. */
 
-        const int HMOX = 23;
-        const int HMOY = 4;
-
         /* Start by doing the HANDYMAP case display. */
-        Crt.Window(HMOX, HMOY, HMOX + 35, HMOY + 20);
+        const int X1 = WDM.HM_X;
+        const int X2 = WDM.HM_X + WDM.HM_WIDTH;
+        const int Y1 = WDM.HM_Y;
+        const int Y2 = WDM.HM_Y + WDM.HM_HEIGHT;
+
+        Crt.Window(X1, Y1, X2, Y2);
         Crt.ClrScr();
-        Crt.Window(1, 1, 80, 25);
-        rpgtext.LovelyBox(Crt.Color.Red, HMOX, HMOY, HMOX + 35, HMOY + 20);
-        rpgtext.LovelyBox(Crt.Color.LightGray, HMOX + 1, HMOY + 2, HMOX + 34, HMOY + 19);
+        Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
+        rpgtext.LovelyBox(Crt.Color.Red, X1, Y1, X2, Y2);
+        rpgtext.LovelyBox(Crt.Color.LightGray, X1 + 1, Y1 + 2, X2 - 1, Y2 - 1);
         Crt.TextColor(Crt.Color.LightRed);
         Crt.TextBackground(Crt.Color.Black);
-        Crt.GotoXY(HMOX + 1, HMOY + 1);
+        Crt.GotoXY(X1 + 1, Y1 + 1);
         Crt.Write("X     HANDYMAP v3.14");
 
         /* Next, go through the map in 16 x 16 blocks. */
@@ -98,7 +81,7 @@ public class backpack
                 }
 
                 /* Print the decided-upon character. */
-                Crt.GotoXY(X + 1 + HMOX, Y + 2 + HMOY);
+                Crt.GotoXY(X + 1 + X1, Y + 2 + Y1);
                 if (C != ' ') Crt.Write(C);
                 else if (Rev > 75) Crt.Write('#');
                 else if (Rev > 50) Crt.Write('=');
@@ -151,10 +134,14 @@ public class backpack
         EqpRPM = null;
         InvRPM = null;
 
-	    /*Restore the display.*/
-	    Crt.Window(EqpWin_X1,EqpWin_Y1,PCSWin_X2,InvWin_Y2);
+        /*Restore the display.*/
+        int X1 = Math.Min(WDM.EqpWin_X, Math.Min(WDM.DscWin_X, Math.Min(WDM.PCSWin_X, WDM.InvWin_X)));
+        int Y1 = Math.Min(WDM.EqpWin_Y, Math.Min(WDM.DscWin_Y, Math.Min(WDM.PCSWin_Y, WDM.InvWin_Y)));
+        int X2 = Math.Max(WDM.EqpWin_X2, Math.Max(WDM.DscWin_X2, Math.Max(WDM.PCSWin_X2, WDM.InvWin_X2)));
+        int Y2 = Math.Max(WDM.EqpWin_Y2, Math.Max(WDM.DscWin_Y2, Math.Max(WDM.PCSWin_Y2, WDM.InvWin_Y2)));
+        Crt.Window(X1, Y1, X2, Y2);
 	    Crt.ClrScr();
-	    Crt.Window(1,1,80,25);
+	    Crt.Window(1,1,WDM.CON_WIDTH,WDM.CON_HEIGHT);
     }
 
     public static dcitems.DCItem PromptItem(gamebook.Scenario SC, int IK)
@@ -209,14 +196,14 @@ public class backpack
     {
         /*Create the equipment menu, and store it in EqpRPM*/
         /*Initialize the menu.*/
-        EqpRPM = rpgmenus.CreateRPGMenu(Crt.Color.Black, Crt.Color.Green, Crt.Color.LightGreen, EqpWin_X1, EqpWin_Y1, EqpWin_X2, EqpWin_Y2);
+        EqpRPM = rpgmenus.CreateRPGMenu(Crt.Color.Black, Crt.Color.Green, Crt.Color.LightGreen, WDM.EqpWin_X, WDM.EqpWin_Y, WDM.EqpWin_X2, WDM.EqpWin_Y2);
 
         EqpRPM.dBorColor = Crt.Color.White;
         EqpRPM.dTexColor = DscColor;
-        EqpRPM.dx1 = DscWin_X1;
-        EqpRPM.dy1 = DscWin_Y1;
-        EqpRPM.dx2 = DscWin_X2;
-        EqpRPM.dy2 = DscWin_Y2;
+        EqpRPM.dx1 = WDM.DscWin_X;
+        EqpRPM.dy1 = WDM.DscWin_Y;
+        EqpRPM.dx2 = WDM.DscWin_X2;
+        EqpRPM.dy2 = WDM.DscWin_Y2;
 
         /*Add the MenuKeys.*/
         rpgmenus.AddRPGMenuKey(EqpRPM, BMK_SwitchKey, BMK_SwitchCode);
@@ -238,14 +225,14 @@ public class backpack
         /*Create the inventory menu, and store it in InvRPM*/
 
         /*Initialize the menu.*/
-        InvRPM = rpgmenus.CreateRPGMenu(Crt.Color.Black, Crt.Color.Green, Crt.Color.LightGreen, InvWin_X1, InvWin_Y1, InvWin_X2, InvWin_Y2);
+        InvRPM = rpgmenus.CreateRPGMenu(Crt.Color.Black, Crt.Color.Green, Crt.Color.LightGreen, WDM.InvWin_X, WDM.InvWin_Y, WDM.InvWin_X2, WDM.InvWin_Y2);
 
         InvRPM.dBorColor = Crt.Color.White;
         InvRPM.dTexColor = DscColor;
-        InvRPM.dx1 = DscWin_X1;
-        InvRPM.dy1 = DscWin_Y1;
-        InvRPM.dx2 = DscWin_X2;
-        InvRPM.dy2 = DscWin_Y2;
+        InvRPM.dx1 = WDM.DscWin_X;
+        InvRPM.dy1 = WDM.DscWin_Y;
+        InvRPM.dx2 = WDM.DscWin_X2;
+        InvRPM.dy2 = WDM.DscWin_Y2;
 
         /*Add the MenuKeys.*/
         rpgmenus.AddRPGMenuKey(InvRPM, BMK_SwitchKey, BMK_SwitchCode);
@@ -275,7 +262,7 @@ public class backpack
 	    const int C5 = 22;
 	    const int C6 = 26;
 
-	    Crt.Window(PCSWin_X1+1,PCSWin_Y1+1,PCSWin_X2-1,PCSWin_Y2-1);
+	    Crt.Window(WDM.PCSWin_X+1,WDM.InvWin_Y+1,WDM.PCSWin_X2-1,WDM.PCSWin_Y2-1);
 	    Crt.ClrScr();
 	    Crt.TextColor(Crt.Color.Blue);
 	    Crt.GotoXY(C1,1);
@@ -305,29 +292,32 @@ public class backpack
 	    Crt.GotoXY(C1+7,3);
 	    Crt.Write(dcchars.PCArmorPV(SC.PC).ToString());
 
-	    Crt.Window(1,1,80,25);
+	    Crt.Window(1,1,WDM.CON_WIDTH,WDM.CON_HEIGHT);
     }
 
     static void TheDisplay(gamebook.Scenario SC)
     {
         /*This procedure sets up the BackPack display.*/
-        Crt.Window(EqpWin_X1, EqpWin_Y1, PCSWin_X2, InvWin_Y2);
+        Crt.Window(WDM.EqpWin_X, WDM.EqpWin_Y, WDM.PCSWin_X2, WDM.InvWin_Y2);
         Crt.ClrScr();
         Crt.Window(1, 1, 80, 25);
-        rpgtext.LovelyBox(Crt.Color.LightGray, EqpWin_X1, EqpWin_Y1, InvWin_X2, InvWin_Y2);
+        rpgtext.LovelyBox(Crt.Color.LightGray, WDM.EqpWin_X, WDM.EqpWin_Y, WDM.InvWin_X2, WDM.InvWin_Y2);
         Crt.TextColor(Crt.Color.Green);
-        Crt.GotoXY(EqpWin_X1 + 2, EqpWin_Y2);
-        for (int t = 1; t <= EqpWin_X2 - EqpWin_X1 - 3; ++t)
-            Crt.Write('=');
+        Crt.GotoXY(WDM.EqpWin_X + 2, WDM.EqpWin_Y2);
 
-        rpgtext.LovelyBox(Crt.Color.DarkGray, PCSWin_X1, PCSWin_Y1, PCSWin_X2, PCSWin_Y2);
+        Crt.TextColor(Crt.Color.LightGray);
+        for (int t = 1; t <= WDM.EqpWin_WIDTH - 3; ++t)
+            Crt.Write((char)205);
+        Crt.TextColor(Crt.Color.Green);
+
+        rpgtext.LovelyBox(Crt.Color.DarkGray, WDM.PCSWin_X, WDM.PCSWin_Y, WDM.PCSWin_X2, WDM.PCSWin_Y2);
         DisplayPCStats(SC);
         Crt.TextColor(Crt.Color.DarkGray);
-        Crt.GotoXY(PCSWin_X1, PCSWin_Y2 + 1);
+        Crt.GotoXY(WDM.PCSWin_X, WDM.PCSWin_Y + 1);
         Crt.Write("/ - Mode  d - Drop");
-        Crt.GotoXY(PCSWin_X1, PCSWin_Y2 + 2);
+        Crt.GotoXY(WDM.PCSWin_X, WDM.PCSWin_Y2 + 2);
         Crt.Write("[SPACE] - Default Item Action");
-        Crt.GotoXY(PCSWin_X1, PCSWin_Y2 + 3);
+        Crt.GotoXY(WDM.PCSWin_X, WDM.PCSWin_Y2 + 3);
         Crt.Write("[ESC] - Exit");
     }
 
@@ -379,13 +369,13 @@ public class backpack
         // t: Integer;
 
         /*Create the menu. It's gonna use the InvWindow.*/
-        rpgmenus.RPGMenu RPM = rpgmenus.CreateRPGMenu(Crt.Color.Black, Crt.Color.Green, Crt.Color.LightGreen, InvWin_X1, InvWin_Y1, InvWin_X2, InvWin_Y2);
+        rpgmenus.RPGMenu RPM = rpgmenus.CreateRPGMenu(Crt.Color.Black, Crt.Color.Green, Crt.Color.LightGreen, WDM.InvWin_X, WDM.InvWin_Y, WDM.InvWin_X2, WDM.InvWin_Y2);
         RPM.dBorColor = Crt.Color.White;
         RPM.dTexColor = DscColor;
-        RPM.dx1 = DscWin_X1;
-        RPM.dy1 = DscWin_Y1;
-        RPM.dx2 = DscWin_X2;
-        RPM.dy2 = DscWin_Y2;
+        RPM.dx1 = WDM.DscWin_X;
+        RPM.dy1 = WDM.DscWin_Y;
+        RPM.dx2 = WDM.DscWin_X2;
+        RPM.dy2 = WDM.DscWin_Y2;
 
         /*Add one menu item for each appropriate item in the Inventory.*/
         dcitems.DCItem i = SC.PC.inv;

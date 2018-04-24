@@ -523,30 +523,30 @@ public class rpgtext
 
         //{ Print the four corners.}
         Crt.GotoXY(x1, y1);
-        Crt.Write("+");
+        Crt.Write((char)218);
         Crt.GotoXY(x2, y1);
-        Crt.Write("+");
+        Crt.Write((char)191);
         Crt.GotoXY(x1, y2);
-        Crt.Write("+");
+        Crt.Write((char)192);
         Crt.GotoXY(x2, y2);
-        Crt.Write("+");
+        Crt.Write((char)217);
 
         //{ Print the two horizontal edges.}
         for (int x = x1 + 1; x < x2; ++x)
         {
             Crt.GotoXY(x, y1);
-            Crt.Write("-");
+            Crt.Write((char)196);
             Crt.GotoXY(x, y2);
-            Crt.Write("-");
+            Crt.Write((char)196);
         }
 
         //{ Print the two vertical edges.}
         for (int y = y1 + 1; y < y2; ++y)
         {
             Crt.GotoXY(x1, y);
-            Crt.Write("|");
+            Crt.Write((char)179);
             Crt.GotoXY(x2, y);
-            Crt.Write("|");
+            Crt.Write((char)179);
         }
     }
 

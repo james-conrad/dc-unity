@@ -149,7 +149,7 @@ public class pcaction
         int Y = SC.PC.m.y;
 
         /*Locate the door*/
-        for (int D = 1; D <= 8; ++D)
+        for (int D = 1; D <= 9; ++D)
         {
             if (IsOpenDoor(SC, X + texmaps.VecDir[D - 1, 0], Y + texmaps.VecDir[D - 1, 1]))
             {
@@ -187,7 +187,7 @@ public class pcaction
         /*the door can't be closed.*/
         if (!texmodel.ModelPresent(SC.gb.mog, X + texmaps.VecDir[DoorD - 1, 0], Y + texmaps.VecDir[DoorD - 1, 1]))
         {
-            SC.gb.map[X + texmaps.VecDir[DoorD - 1, 0], Y + texmaps.VecDir[DoorD - 1, 1]].terr -= 1;
+            SC.gb.map[X + texmaps.VecDir[DoorD - 1, 0] - 1, Y + texmaps.VecDir[DoorD - 1, 1] - 1].terr += 1;
             texmaps.DisplayTile(SC.gb, X + texmaps.VecDir[DoorD - 1, 0], Y + texmaps.VecDir[DoorD - 1, 1]);
             texmaps.UpdatePOV(SC.gb.POV, SC.gb);
             texmaps.ApplyPOV(SC.gb.POV, SC.gb);

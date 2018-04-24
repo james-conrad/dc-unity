@@ -215,8 +215,8 @@ public class Crt
         }
     }
 
-    public const int consoleWidth = 80;
-    public const int consoleHeight = 25;
+    public const int consoleWidth = WDM.CON_WIDTH;
+    public const int consoleHeight = WDM.CON_HEIGHT;
 
     public struct Glyph
     {
