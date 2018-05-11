@@ -33,29 +33,37 @@ public class dcplay
         /* If there are no files to load, call the STARTGAME procedure. */
         /* Otherwise, pass the scenario data on to PLAYSCENE. */
 
-        /* Create the menu. */
-        rpgmenus.RPGMenu RPM = rpgmenus.CreateRPGMenu(Crt.Color.LightBlue, Crt.Color.Green, Crt.Color.LightGreen, 20, 8, 60, 23);
-        rpgmenus.BuildFileMenu(RPM, "savegame/*.txt");
-
-        if (RPM.numItem < 1)
+        if (!Directory.Exists("savegame"))
         {
-            /* No save game files were found. Jump to STARTGAME, */
-            /* after deallocating the empty menu... */
+            /* No savegame directory, Jump to STARTGAME. */
             StartGame();
         }
         else
         {
-            /* Select a file, then dispose of the menu. */
-            rpgmenus.RPMSortAlpha(RPM);
-            string FName = rpgmenus.SelectFile(RPM);
+            /* Create the menu. */
+            rpgmenus.RPGMenu RPM = rpgmenus.CreateRPGMenu(Crt.Color.LightBlue, Crt.Color.Green, Crt.Color.LightGreen, 20, 8, 60, 23);
+            rpgmenus.BuildFileMenu(RPM, "savegame/*.txt");
 
-            /* If selection was cancelled, just fall back out to the */
-            /* main menu. Otherwise, load the file and pass the */
-            /* scenario to PLAYSCENE. */
-            if (FName != "")
+            if (RPM.numItem < 1)
             {
-                gamebook.Scenario SC = gamebook.LoadGame("savegame/" + FName + ".txt");
-                PlayScene(SC);
+                /* No save game files were found. Jump to STARTGAME, */
+                /* after deallocating the empty menu... */
+                StartGame();
+            }
+            else
+            {
+                /* Select a file, then dispose of the menu. */
+                rpgmenus.RPMSortAlpha(RPM);
+                string FName = rpgmenus.SelectFile(RPM);
+
+                /* If selection was cancelled, just fall back out to the */
+                /* main menu. Otherwise, load the file and pass the */
+                /* scenario to PLAYSCENE. */
+                if (FName != "")
+                {
+                    gamebook.Scenario SC = gamebook.LoadGame("savegame/" + FName + ".txt");
+                    PlayScene(SC);
+                }
             }
         }
     }

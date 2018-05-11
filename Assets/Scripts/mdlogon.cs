@@ -16,7 +16,7 @@ public class mdlogon
 
         /* Set up the display. */
         texmaps.ClearMapArea();
-        rpgtext.LovelyBox(Crt.Color.White, UCM_X1 - 1, UCM_Y1 - 1, UCM_X2 + 1, UCM_Y2 + 1);
+        rpgtext.LovelyBox(Crt.Color.White, WDM.UCM_X - 1, WDM.UCM_Y - 1, WDM.UCM_X2 + 1, WDM.UCM_Y2 + 1);
 
         /* Find the computer we want. */
         cwords.MPU MP = SC.Comps;
@@ -30,7 +30,7 @@ public class mdlogon
         rpgtext.DCGameMessage("Using " + cwords.MPUMan[MP.kind - 1].name + ".");
 
         /* Create MetaControl Menu */
-        rpgmenus.RPGMenu MCM = rpgmenus.CreateRPGMenu(Crt.Color.LightGray, Crt.Color.Blue, Crt.Color.Cyan, MCM_X1, MCM_Y1, MCM_X2, MCM_Y2);
+        rpgmenus.RPGMenu MCM = rpgmenus.CreateRPGMenu(Crt.Color.LightGray, Crt.Color.Blue, Crt.Color.Cyan, WDM.MCM_X, WDM.MCM_Y, WDM.MCM_X2, WDM.MCM_Y2);
         rpgmenus.AddRPGMenuItem(MCM, "Access Terminal", 1);
         rpgmenus.AddRPGMenuItem(MCM, "Hack Logon System", 2);
         rpgmenus.AddRPGMenuItem(MCM, "Disconnect", -1);
@@ -117,29 +117,19 @@ public class mdlogon
         "This module houses the thrusters and verniers which help keep DeadCold in a stable orbit. It is also sometimes necessary to move the station, as solar flares and meteor storms could seriously damage our solar arrays."
     };
 
-    public const int UCM_X1 = 5;
-    public const int UCM_Y1 = 7;
-    public const int UCM_X2 = 53;
-    public const int UCM_Y2 = 22;
-
-    public const int MCM_X1 = 55;
-    public const int MCM_Y1 = 14;
-    public const int MCM_X2 = 77;
-    public const int MCM_Y2 = 22;
-
     static void ClearUCM()
     {
         /* Cls on the UCM zone described above. */
-        Crt.Window(UCM_X1, UCM_Y1, UCM_X2, UCM_Y2);
+        Crt.Window(WDM.UCM_X, WDM.UCM_Y, WDM.UCM_X2, WDM.UCM_Y2);
         Crt.ClrScr();
-        Crt.Window(1, 1, 80, 25);
+        Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
     }
 
     static void DoMapDisplay()
     {
         /* This procedure handles the map displayer. */
         /* Create the menu. */
-        rpgmenus.RPGMenu MM = rpgmenus.CreateRPGMenu(Crt.Color.Blue, Crt.Color.Green, Crt.Color.LightGreen, UCM_X1 + 19, UCM_Y1 + 1, UCM_X2 - 1, UCM_Y2 - 1);
+        rpgmenus.RPGMenu MM = rpgmenus.CreateRPGMenu(Crt.Color.Blue, Crt.Color.Green, Crt.Color.LightGreen, WDM.UCM_X + 19, WDM.UCM_Y + 1, WDM.UCM_X2 - 1, WDM.UCM_Y2 - 1);
         for (int t = 1; t <= NumNamedLevels; ++t)
             rpgmenus.AddRPGMenuItem(MM, LevelName[t - 1], t);
 
@@ -147,14 +137,14 @@ public class mdlogon
 
         /* Display the map itself */
         ClearUCM();
-        Crt.Window(UCM_X1, UCM_Y1, UCM_X2, UCM_Y2);
+        Crt.Window(WDM.UCM_X, WDM.UCM_Y, WDM.UCM_X2, WDM.UCM_Y2);
         Crt.TextColor(Crt.Color.Green);
         for (int t = 1; t <= NumMapRow; ++t)
         {
             Crt.GotoXY(3, t + 2);
             Crt.Write(StationMap[t - 1]);
         }
-        Crt.Window(1, 1, 80, 25);
+        Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
 
         /* Enter the main loop. Keep processing until an Exit is recieved. */
         int N = -1;
@@ -164,14 +154,14 @@ public class mdlogon
 
             if (N != -1)
             {
-                Crt.GotoXY(UCM_X1 + LevelLoc[N - 1, 0] + 1, UCM_Y1 + LevelLoc[N - 1, 1] + 1);
+                Crt.GotoXY(WDM.UCM_X + LevelLoc[N - 1, 0] + 1, WDM.UCM_Y + LevelLoc[N - 1, 1] + 1);
                 Crt.TextColor(Crt.Color.Yellow);
                 Crt.Write(LevelName[N - 1][0]);
 
-                rpgtext.GameMessage(LevelDesc[N - 1], UCM_X1 + 19, UCM_Y1 + 1, UCM_X2 - 1, UCM_Y2 - 1, Crt.Color.Green, Crt.Color.Blue);
+                rpgtext.GameMessage(LevelDesc[N - 1], WDM.UCM_X + 19, WDM.UCM_Y + 1, WDM.UCM_X2 - 1, WDM.UCM_Y2 - 1, Crt.Color.Green, Crt.Color.Blue);
                 rpgtext.RPGKey();
 
-                Crt.GotoXY(UCM_X1 + LevelLoc[N - 1, 0] + 1, UCM_Y1 + LevelLoc[N - 1, 1] + 1);
+                Crt.GotoXY(WDM.UCM_X + LevelLoc[N - 1, 0] + 1, WDM.UCM_Y + LevelLoc[N - 1, 1] + 1);
                 Crt.TextColor(Crt.Color.Green);
                 Crt.Write(LevelName[N - 1][1]);
             }
@@ -181,16 +171,16 @@ public class mdlogon
 
     static void PrintCap(string msg)
     {
-        Crt.Window(UCM_X1, UCM_Y1, UCM_X2, UCM_Y1 + 2);
+        Crt.Window(WDM.UCM_X, WDM.UCM_Y, WDM.UCM_X2, WDM.UCM_Y + 2);
         Crt.ClrScr();
-        rpgtext.LovelyBox(Crt.Color.Blue, 3, 1, UCM_X2 - UCM_X1 - 2, 3);
+        rpgtext.LovelyBox(Crt.Color.Blue, 3, 1, WDM.UCM_X2 - WDM.UCM_X - 2, 3);
         Crt.TextColor(Crt.Color.Green);
-        int X = (UCM_X2 - UCM_X1 - msg.Length) / 2;
+        int X = (WDM.UCM_X2 - WDM.UCM_X - msg.Length) / 2;
         if (X < 1)
             X = 1;
         Crt.GotoXY(X, 2);
         Crt.Write(msg);
-        Crt.Window(1, 1, 80, 25);
+        Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
     }
 
     static void TexBrowser(gamebook.Scenario SC, cwords.MPU MP, int Sec, string Cap)
@@ -205,7 +195,7 @@ public class mdlogon
 
         /* Create the menu. The items this menu will have in it are determined */
         /* by the SEC score that the player achieved. */
-        rpgmenus.RPGMenu TBM = rpgmenus.CreateRPGMenu(Crt.Color.Black, Crt.Color.Green, Crt.Color.LightGreen, UCM_X1, UCM_Y1 + 3, UCM_X2, UCM_Y2);
+        rpgmenus.RPGMenu TBM = rpgmenus.CreateRPGMenu(Crt.Color.Black, Crt.Color.Green, Crt.Color.LightGreen, WDM.UCM_X, WDM.UCM_Y + 3, WDM.UCM_X2, WDM.UCM_Y2);
         string S = MP.Attr;
         while (S != "")
         {
@@ -237,7 +227,7 @@ public class mdlogon
             if (N > -1)
             {
                 PrintCap(rpgtext.TexMan[N - 1].title);
-                rpgtext.GameMessage(rpgtext.TexMan[N].msg, UCM_X1, UCM_Y1 + 3, UCM_X2, UCM_Y2, Crt.Color.Green, Crt.Color.Black);
+                rpgtext.GameMessage(rpgtext.TexMan[N].msg, WDM.UCM_X, WDM.UCM_Y + 3, WDM.UCM_X2, WDM.UCM_Y2, Crt.Color.Green, Crt.Color.Black);
                 rpgtext.RPGKey();
 
                 if (!rpgtext.TexMan[N - 1].used)
@@ -273,7 +263,7 @@ public class mdlogon
         /* has the correct security clearance, let her see them. */
 
         /* Create the menu. */
-        rpgmenus.RPGMenu IKM = rpgmenus.CreateRPGMenu(Crt.Color.Black, Crt.Color.Green, Crt.Color.LightGreen, UCM_X1, UCM_Y2 - 4, UCM_X2, UCM_Y2);
+        rpgmenus.RPGMenu IKM = rpgmenus.CreateRPGMenu(Crt.Color.Black, Crt.Color.Green, Crt.Color.LightGreen, WDM.UCM_X, WDM.UCM_Y2 - 4, WDM.UCM_X2, WDM.UCM_Y2);
         rpgmenus.AddRPGMenuItem(IKM, "Public Service Messages", 2);
         rpgmenus.AddRPGMenuItem(IKM, "Station Map", 1);
 
@@ -285,7 +275,7 @@ public class mdlogon
             Crt.TextColor(Crt.Color.Green);
             for (N = 1; N <= NumLogoRows; ++N)
             {
-                Crt.GotoXY((UCM_X1 + UCM_X2 - LogoWidth) / 2, UCM_Y1 + N);
+                Crt.GotoXY((WDM.UCM_X + WDM.UCM_X2 - LogoWidth) / 2, WDM.UCM_Y + N);
                 Crt.Write(DCLogo[N - 1]);
             }
 
@@ -307,7 +297,7 @@ public class mdlogon
     {
         /* Simulate a crashed & nonfunctioning terminal. */
         string msg = "System Error 255 Main interface unit is offline";
-        rpgtext.GameMessage(msg, UCM_X1 + 10, UCM_Y1 + 5, UCM_X2 - 10, UCM_Y2 - 5, Crt.Color.LightRed, Crt.Color.LightRed);
+        rpgtext.GameMessage(msg, WDM.UCM_X + 10, WDM.UCM_Y + 5, WDM.UCM_X2 - 10, WDM.UCM_Y2 - 5, Crt.Color.LightRed, Crt.Color.LightRed);
     }
 
     static void HealAllInjuries(gamebook.Scenario SC)
@@ -335,7 +325,7 @@ public class mdlogon
         /* heal all injuries and status conditions instantly... until the */
         /* player crashes it by trying to hack the medical database, that is. */
 
-        rpgmenus.RPGMenu RPM = rpgmenus.CreateRPGMenu(Crt.Color.Red, Crt.Color.Red, Crt.Color.LightRed, UCM_X1 + 2, UCM_Y1 + 2, UCM_X2 - 2, UCM_Y2 - 2);
+        rpgmenus.RPGMenu RPM = rpgmenus.CreateRPGMenu(Crt.Color.Red, Crt.Color.Red, Crt.Color.LightRed, WDM.UCM_X + 2, WDM.UCM_Y + 2, WDM.UCM_X2 - 2, WDM.UCM_Y2 - 2);
         rpgmenus.AddRPGMenuItem(RPM, "Treat Injuries", 1);
         rpgmenus.AddRPGMenuItem(RPM, "View Records", 2);
         rpgmenus.AddRPGMenuItem(RPM, "Standby Mode", -1);
@@ -356,7 +346,7 @@ public class mdlogon
 
     static void PowerAllocation(gamebook.Scenario SC)
     {
-        rpgmenus.RPGMenu PAM = rpgmenus.CreateRPGMenu(Crt.Color.DarkGray, Crt.Color.Blue, Crt.Color.LightBlue, UCM_X1 + 2, UCM_Y1 + 2, UCM_X2 - 2, UCM_Y2 - 2);
+        rpgmenus.RPGMenu PAM = rpgmenus.CreateRPGMenu(Crt.Color.DarkGray, Crt.Color.Blue, Crt.Color.LightBlue, WDM.UCM_X + 2, WDM.UCM_Y + 2, WDM.UCM_X2 - 2, WDM.UCM_Y2 - 2);
         rpgmenus.AddRPGMenuItem(PAM, "Module \"B\" Emergency Power: Security", 0);
         rpgmenus.AddRPGMenuItem(PAM, "Module \"B\" Emergency Power: Cryogenics", 0);
         rpgmenus.AddRPGMenuItem(PAM, "Module \"B\" Emergency Power: Infratap", 0);
@@ -368,7 +358,7 @@ public class mdlogon
 
     static void DoMorgan(gamebook.Scenario SC, cwords.MPU MP, int Sec)
     {
-        rpgmenus.RPGMenu RPM = rpgmenus.CreateRPGMenu(Crt.Color.DarkGray, Crt.Color.Magenta, Crt.Color.LightMagenta, UCM_X1 + 2, UCM_Y1 + 2, UCM_X2 - 2, UCM_Y2 - 2);
+        rpgmenus.RPGMenu RPM = rpgmenus.CreateRPGMenu(Crt.Color.DarkGray, Crt.Color.Magenta, Crt.Color.LightMagenta, WDM.UCM_X + 2, WDM.UCM_Y + 2, WDM.UCM_X2 - 2, WDM.UCM_Y2 - 2);
         rpgmenus.AddRPGMenuItem(RPM, "Power Allocation", 1);
         rpgmenus.AddRPGMenuItem(RPM, "Mail Core Memory", 2);
         rpgmenus.AddRPGMenuItem(RPM, "Log Off", -1);
@@ -397,13 +387,13 @@ public class mdlogon
         switch (N)
         {
             case 1:
-                RPM = rpgmenus.CreateRPGMenu(Crt.Color.LightRed, Crt.Color.Cyan, Crt.Color.Yellow, UCM_X1 + 3, UCM_Y1 + 3, UCM_X2 - 3, UCM_Y2 - 3);
+                RPM = rpgmenus.CreateRPGMenu(Crt.Color.LightRed, Crt.Color.Cyan, Crt.Color.Yellow, WDM.UCM_X + 3, WDM.UCM_Y + 3, WDM.UCM_X2 - 3, WDM.UCM_Y2 - 3);
                 break;
             case 0:
-                RPM = rpgmenus.CreateRPGMenu(Crt.Color.Yellow, Crt.Color.Cyan, Crt.Color.Yellow, UCM_X1 + 3, UCM_Y1 + 3, UCM_X2 - 3, UCM_Y2 - 3);
+                RPM = rpgmenus.CreateRPGMenu(Crt.Color.Yellow, Crt.Color.Cyan, Crt.Color.Yellow, WDM.UCM_X + 3, WDM.UCM_Y + 3, WDM.UCM_X2 - 3, WDM.UCM_Y2 - 3);
                 break;
             default:
-                RPM = rpgmenus.CreateRPGMenu(Crt.Color.LightGreen, Crt.Color.Cyan, Crt.Color.Yellow, UCM_X1 + 3, UCM_Y1 + 3, UCM_X2 - 3, UCM_Y2 - 3);
+                RPM = rpgmenus.CreateRPGMenu(Crt.Color.LightGreen, Crt.Color.Cyan, Crt.Color.Yellow, WDM.UCM_X + 3, WDM.UCM_Y + 3, WDM.UCM_X2 - 3, WDM.UCM_Y2 - 3);
                 break;
         }
 
@@ -442,12 +432,12 @@ public class mdlogon
 
     static void DoDescartes(gamebook.Scenario SC, cwords.MPU MP, int Sec)
     {
-	    /* The player is accessing primary server DESCARTES. */
+        /* The player is accessing primary server DESCARTES. */
 
-	    rpgmenus.RPGMenu RPM = rpgmenus.CreateRPGMenu(Crt.Color.Green, Crt.Color.Cyan, Crt.Color.Yellow , UCM_X1 + 2 , UCM_Y1 + 2 , UCM_X2 - 2 , UCM_Y2 - 2 );
-	    rpgmenus.AddRPGMenuItem( RPM , "Emergency Status" , 1 );
-        rpgmenus.AddRPGMenuItem( RPM , "Mail Core Memory" , 2 );
-        rpgmenus.AddRPGMenuItem( RPM , "Log Off" , -1 );
+        rpgmenus.RPGMenu RPM = rpgmenus.CreateRPGMenu(Crt.Color.Green, Crt.Color.Cyan, Crt.Color.Yellow, WDM.UCM_X + 2, WDM.UCM_Y + 2, WDM.UCM_X2 - 2, WDM.UCM_Y2 - 2);
+        rpgmenus.AddRPGMenuItem(RPM, "Emergency Status", 1);
+        rpgmenus.AddRPGMenuItem(RPM, "Mail Core Memory", 2);
+        rpgmenus.AddRPGMenuItem(RPM, "Log Off", -1);
 
         int N;
         do
@@ -461,7 +451,7 @@ public class mdlogon
             }
 
         }
-        while (N != -1 || MP.Attr[0] == 'X');
+        while (N != -1 && MP.Attr[0] != 'X');
     }
 
 
@@ -489,41 +479,41 @@ public class mdlogon
 
     static void AttemptHack(gamebook.Scenario SC, cwords.MPU MP, ref int Sec)
     {
-	    /* The player wants to hack this terminal. Give it a try, and hope */
-	    /* there are no disasterous results... */
-	    rpgtext.DCGameMessage( "Attempting to hack " + cwords.MPUMan[MP.kind - 1].name + "...");
+        /* The player wants to hack this terminal. Give it a try, and hope */
+        /* there are no disasterous results... */
+        rpgtext.DCGameMessage("Attempting to hack " + cwords.MPUMan[MP.kind - 1].name + "...");
 
-	    /* Do the animation for hacking. */
-	    Crt.Window( MCM_X1 + 1 , MCM_Y1 + 1 , MCM_X2 - 1 , MCM_Y2 - 1 );
-	    Crt.ClrScr();
-	    Crt.TextColor(Crt.Color.Blue);
-	    int N = rpgdice.Random(250) + 250;
+        /* Do the animation for hacking. */
+        Crt.Window(WDM.MCM_X + 1, WDM.MCM_Y + 1, WDM.MCM_X2 - 1, WDM.MCM_Y2 - 1);
+        Crt.ClrScr();
+        Crt.TextColor(Crt.Color.Blue);
+        int N = rpgdice.Random(250) + 250;
         for (int t = 1; t <= N; ++t)
             Crt.Write(rpgdice.Random(256).ToString("X2") + " ");
         texfx.Delay();
-	    N = rpgdice.Random(250) + 250;
-	    for (int t = 1; t <= N; ++t)
+        N = rpgdice.Random(250) + 250;
+        for (int t = 1; t <= N; ++t)
             Crt.Write(rpgdice.Random(256).ToString("X2") + " ");
-	    texfx.Delay();
+        texfx.Delay();
 
-	    /* Actually figure out if it worked. */
-	    int R = rpgdice.RollStep(dcchars.PCTechSkill(SC.PC));
-	    int T = Sec + cwords.MPUMan[MP.kind - 1].SecPass;
-	    if (R > cwords.MPUMan[MP.kind - 1].SecPass && R > T )
+        /* Actually figure out if it worked. */
+        int R = rpgdice.RollStep(dcchars.PCTechSkill(SC.PC));
+        int T = Sec + cwords.MPUMan[MP.kind - 1].SecPass;
+        if (R > cwords.MPUMan[MP.kind - 1].SecPass && R > T)
         {
-		    rpgtext.DCAppendMessage(" You did it.");
-		    Sec = R - cwords.MPUMan[MP.kind - 1].SecPass;
-	    }
+            rpgtext.DCAppendMessage(" You did it.");
+            Sec = R - cwords.MPUMan[MP.kind - 1].SecPass;
+        }
         else
         {
-		    rpgtext.DCAppendMessage(" You failed.");
-		    if (R < T - 5)
+            rpgtext.DCAppendMessage(" You failed.");
+            if (R < T - 5)
             {
-			    MP.Attr = "X" + MP.Attr;
-			    if (R < T - 10)
-                    gamebook.SetTrigger( SC , "ALARM");
-		    }
-	    }
+                MP.Attr = "X" + MP.Attr;
+                if (R < T - 10)
+                    gamebook.SetTrigger(SC, "ALARM");
+            }
+        }
     }
 
 }

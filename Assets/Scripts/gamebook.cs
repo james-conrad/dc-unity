@@ -229,12 +229,12 @@ public class gamebook
     //{*** GENERAL IO ROUTINES ***}
     public static void PCStatLine(Scenario SC)
     {
-        Crt.Window(1, 25, 79, 25);
+        Crt.Window(WDM.PCStat_X, WDM.PCStat_Y, WDM.PCStat_X2, WDM.PCStat_Y);
         Crt.ClrScr();
-        Crt.Window(1, 1, 80, 25);
+        Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
 
         //{Print data on status effects.}
-        Crt.GotoXY(2, 25);
+        Crt.GotoXY(WDM.PCStat_X, WDM.PCStat_Y);
         //{ First, if player is starving, show that. }
         if (SC.PC.carbs < 0)
         {
@@ -263,7 +263,7 @@ public class gamebook
         else if (HP > 999)
             HP = 999;
         Crt.TextColor(Crt.Color.Green);
-        Crt.GotoXY(18, 25);
+        Crt.GotoXY(18, WDM.PCStat_Y);
         Crt.Write("HP:");
         Crt.TextColor(StatusColor(SC.PC.HPMax, SC.PC.HP));
         Crt.Write(HP.ToString());
@@ -274,7 +274,7 @@ public class gamebook
         else if (HP > 999)
             HP = 999;
         Crt.TextColor(Crt.Color.Green);
-        Crt.GotoXY(25, 25);
+        Crt.GotoXY(25, WDM.PCStat_Y);
         Crt.Write("MP:");
         Crt.TextColor(StatusColor(SC.PC.MPMax, SC.PC.MP));
         Crt.Write(HP.ToString());
@@ -282,7 +282,7 @@ public class gamebook
         for (t = 0; t < 8; ++t)
         {
             Crt.TextColor(Crt.Color.Green);
-            Crt.GotoXY(33 + t * 6, 25);
+            Crt.GotoXY(33 + t * 6, WDM.PCStat_Y);
             Crt.Write(dcchars.StatAbbrev[t] + ":");
             HP = dcchars.CStat(SC.PC, t);
             if (HP < SC.PC.stat[t])
@@ -299,6 +299,12 @@ public class gamebook
 
     public static void SaveGame(Scenario SC)
     {
+        /* Create the savegame directory if it's not there. */
+        if (!Directory.Exists("savegame"))
+        {
+            Directory.CreateDirectory("savegame");
+        }
+
         //{This is it. The big one. Save everything to disk...}
 
         //{Open the file.}

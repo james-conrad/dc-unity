@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class UnitTester : MonoBehaviour {
+public class UnitTester : MonoBehaviour
+{
 
     void Test_texutil()
     {
@@ -227,13 +228,14 @@ public class UnitTester : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         Test_texutil();
         Test_rpgdice();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+    }
 }

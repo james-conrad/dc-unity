@@ -7,8 +7,8 @@ using UnityEngine.Tilemaps;
 public class ConsoleRenderer : MonoBehaviour
 {
 
-    public int consoleWidth = 80;
-    public int consoleHeight = 26;
+    public int consoleWidth = 100;
+    public int consoleHeight = 41;
 
     public TileBase[] asciiTiles;
 
@@ -53,14 +53,16 @@ public class ConsoleRenderer : MonoBehaviour
         new Color(0.3f, 0.25f, 1.0f),
         new Color(0.2f, 0.9f, 1.0f),
 
-        new Color(0.63f, 0.65f, 0.7f),   
+        new Color(0.63f, 0.65f, 0.7f),
         new Color(0.2f, 1.0f, 0.3f),
         new Color(0.9f, 0.2f, 1.0f),
-        new Color(1.0f, 0.2f, 0.0f),
+        new Color(1.0f, 0.35f, 0.2f),
 
+        new Color(0.05f, 0.05f, 0.1f),
         new Color(0.5f, 0.1f, 0.6f),
-        Color.red,
+        new Color(0.6f, 0.0f, 0.15f),
         Color.white,
+
         Color.yellow,
     };
 
@@ -83,10 +85,11 @@ public class ConsoleRenderer : MonoBehaviour
             case Crt.Color.LightMagenta: return colors[10];
             case Crt.Color.LightRed: return colors[11];
 
-            case Crt.Color.Magenta: return colors[12];
-            case Crt.Color.Red: return colors[13];
-            case Crt.Color.White: return colors[14];
-            case Crt.Color.Yellow: return colors[15];
+            case Crt.Color.NearBlack: return colors[12];
+            case Crt.Color.Magenta: return colors[13];
+            case Crt.Color.Red: return colors[14];
+            case Crt.Color.White: return colors[15];
+            case Crt.Color.Yellow: return colors[16];
         }
 
         return Color.black;
@@ -245,6 +248,7 @@ public class ConsoleRenderer : MonoBehaviour
             rpgtext.keys.AddKeypress(new rpgtext.Key('\t'));
         }
 
+
         if (runningGame != null)
         {
             if (runningGame.ThreadState == ThreadState.Aborted || runningGame.ThreadState == ThreadState.Stopped)
@@ -252,13 +256,17 @@ public class ConsoleRenderer : MonoBehaviour
                 runningGame.Join();
                 Debug.Log("Thread exited..");
 
+
                 if (threadEx != null)
                 {
                     Debug.LogException(threadEx);
                     threadEx = null;
+                    StartGame();
                 }
-
-                StartGame();
+                else
+                {
+                    Application.Quit();
+                }
             }
         }
 
@@ -279,7 +287,7 @@ public class ConsoleRenderer : MonoBehaviour
             {
                 tilePos.x = -Crt.consoleWidth / 2 + x;
 
-                tilemap.SetTile(tilePos, asciiTiles[glyphs[x, y].c]);
+                tilemap.SetTile(tilePos, asciiTiles[glyphs[x, y].c  % 256]);
                 tilemap.SetColor(tilePos, CrtColorToColor(glyphs[x, y].color));
                 background.SetColor(tilePos, CrtColorToColor(glyphs[x, y].bgColor));
             }

@@ -722,7 +722,7 @@ public class critters
 	    Critter CList = null;
 
         //{Get rid of the info line.}
-        string S = f.ReadLine();
+        f.ReadLine();
 
         int N = -1;
         do

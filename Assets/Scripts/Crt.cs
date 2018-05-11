@@ -16,6 +16,7 @@ public class Crt
         LightGreen,
         LightMagenta,
         LightRed,
+        NearBlack,
         Magenta,
         Red,
         White,
@@ -215,8 +216,8 @@ public class Crt
         }
     }
 
-    public const int consoleWidth = 80;
-    public const int consoleHeight = 25;
+    public const int consoleWidth = WDM.CON_WIDTH;
+    public const int consoleHeight = WDM.CON_HEIGHT;
 
     public struct Glyph
     {
@@ -270,7 +271,7 @@ public class Crt
         }
     }
 
-    static object consoleLock = new object();
+    public static object consoleLock = new object();
 
     static Color textColor = Color.White;
     static Color backgroundColor = Color.Black;

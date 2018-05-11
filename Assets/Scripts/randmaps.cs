@@ -1474,7 +1474,7 @@ public class randmaps
         plotbase.SetSAtt(ref SC.PLLocal, "MSG1 <The air on this level doesn't smell fresh...>");
 
         /* If the life support is off, if the player leakage is greater than 0, */
-        /* add the leakage score to variable 3. If V3 > 500, the PC will { */
+        /* add the leakage score to variable 3. If V3 > 500, the PC will begin */
         /* to choke. */
         plotbase.SetSAtt(ref SC.PLLocal, "HOUR <if= V2 0 ifG PL 0 ifG V3 100 else GotoLEAK Choke>");
         plotbase.SetSAtt(ref SC.PLLocal, "10MIN <if= V2 0 ifG PL 0 ifG V3 500 else GotoLEAK Choke>");

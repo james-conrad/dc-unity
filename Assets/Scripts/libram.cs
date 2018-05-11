@@ -11,12 +11,12 @@ class libram
         // Actually, it looks like this really isn't ready for prime time... since the Scenario and N aren't used yet.
 
         //{Set up the screen.}
-        Crt.Window(1, 4, 80, 24);
+        Crt.Window(WDM.Book_X, WDM.Book_Y, WDM.Book_X2, WDM.Book_Y2);
         Crt.ClrScr();
-        Crt.Window(1, 1, 80, 24);
+        Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
 
         //{Create the menu.}
-        rpgmenus.RPGMenu menu = rpgmenus.CreateRPGMenu(Crt.Color.LightGray, Crt.Color.Green, Crt.Color.LightGreen, 55, 8, 75, 20);
+        rpgmenus.RPGMenu menu = rpgmenus.CreateRPGMenu(Crt.Color.LightGray, Crt.Color.Green, Crt.Color.LightGreen, WDM.Book_X2 - 25, WDM.Book_Y + 4, WDM.Book_X2 - 5, WDM.Book_Y2 - 4);
         for (int i = 0; i < ThePages.Length; ++i)
         {
             rpgmenus.AddRPGMenuItem(menu, ThePages[i].name, i);
@@ -31,12 +31,12 @@ class libram
             {
                 Crt.TextColor(Crt.Color.Black);
                 Crt.TextBackground(Crt.Color.Yellow);
-                Crt.Window(6, 5, 33, 23);
+                Crt.Window(WDM.Book_X + 5, WDM.Book_Y + 1, WDM.Book_X + 32,  WDM.Book_Y2 - 1);
                 Crt.ClrScr();
-                Crt.Window(9, 7, 30, 21);
+                Crt.Window(WDM.Book_X + 8, WDM.Book_Y + 3, WDM.Book_X + 30, WDM.Book_Y2 - 2);
                 rpgtext.Delineate(ThePages[p].page, 21, 1);
                 Crt.TextBackground(Crt.Color.Black);
-                Crt.Window(1, 1, 80, 25);
+                Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
             }
         }
         while (p >= 0);

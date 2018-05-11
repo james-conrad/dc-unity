@@ -373,6 +373,7 @@ GameObject:
   - component: {fileID: 1334643525}
   - component: {fileID: 1334643524}
   - component: {fileID: 1334643523}
+  - component: {fileID: 1334643527}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -414,7 +415,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 20
+  orthographic size: 30.75
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -442,6 +443,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1334643527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1334643522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b3a1cdbb7d5c1548ba82aba720e257c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minWidth: 100
+  minHeight: 61.5
 --- !u!1 &1576736141
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,8 +590,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a42d70d5c7ce60b48a8a14a4b0c0062a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  consoleWidth: 82
-  consoleHeight: 27
+  consoleWidth: 100
+  consoleHeight: 41
   asciiTiles:
   - {fileID: 11400000, guid: 43c445cc2a7a1ca48844b9e03646694e, type: 2}
   - {fileID: 11400000, guid: 666cecdcc5091834dae1535222bb78cd, type: 2}
@@ -886,7 +900,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300190, guid: d0e398cf4061e0d4699bda65feb70ec1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 27aa3ac777aed184dbe230bb9f8cb4d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
