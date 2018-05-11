@@ -950,7 +950,7 @@ class randchar
 
         rpgtext.RPGKey();
 
-        Crt.Window(1, 1, 80, 25);
+        Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
         Crt.ClrScr();
     }
 

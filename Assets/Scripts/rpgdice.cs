@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class rpgdice
 {
     public static Random rng = new Random();
+    //public static Random rng = new Random(898923);
 
     public static int Random(int upperBound)
     {

@@ -16,6 +16,7 @@ public class Crt
         LightGreen,
         LightMagenta,
         LightRed,
+        NearBlack,
         Magenta,
         Red,
         White,
@@ -270,7 +271,7 @@ public class Crt
         }
     }
 
-    static object consoleLock = new object();
+    public static object consoleLock = new object();
 
     static Color textColor = Color.White;
     static Color backgroundColor = Color.Black;

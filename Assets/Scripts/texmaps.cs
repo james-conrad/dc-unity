@@ -12,6 +12,8 @@ public class texmaps
     public const int POVSize = 50;
     public const int NumTerr = 50;
 
+    public const int POV_margin = 6;
+
     //{Constants for specific terrain types.}
     //{CONVENTION: ClosedTerr = OpenTerr + 1}
     public const int OpenDoor = 7;
@@ -354,7 +356,7 @@ public class texmaps
         Crt.ClrScr();
 
         //{Restore the original window.}
-        Crt.Window(1, 1, 80, 25);
+        Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
     }
 
     public static void DisplayMap(GameBoard gb)
@@ -1137,10 +1139,10 @@ public class texmaps
         return gb;
     }
 
-    const int MapDisplayWidth = 80;  //{ Map Display Width}
-    const int MapDisplayHeight = 21; //{ Map Display Height}
-    const int MOX = 1; //{Map Origin X}
-    const int MOY = 4; //{Map Origin Y}
+    const int MapDisplayWidth = WDM.Map_WIDTH;  //{ Map Display Width}
+    const int MapDisplayHeight = WDM.Map_HEIGHT; //{ Map Display Height}
+    const int MOX = WDM.Map_X; //{Map Origin X}
+    const int MOY = WDM.Map_Y; //{Map Origin Y}
 
 
     static int ScreenX(GameBoard gb, int x)
@@ -1347,23 +1349,23 @@ public class texmaps
         int SX = gb.POV.m.x - gb.POV.leftX + 1;
         int SY = gb.POV.m.y - gb.POV.topY + 1;
 
-        //{The screen will be recentered if X or Y are within 3 squares}
+        //{The screen will be recentered if X or Y are within POV_margin squares}
         //{of the edge of the display area, and that said edge is not}
         //{the edge of the map.}
-        if (SX <= 3 && gb.POV.leftX > 1)
+        if (SX <= POV_margin && gb.POV.leftX > 1)
         {
             RC = true;
         }
-        else if (SX >= MapDisplayWidth - 3 && gb.POV.leftX < texmodel.XMax - MapDisplayWidth + 1)
+        else if (SX >= MapDisplayWidth - POV_margin && gb.POV.leftX < texmodel.XMax - MapDisplayWidth + 1)
         {
             RC = true;
         }
 
-        if (SY <= 3 && gb.POV.topY > 1)
+        if (SY <= POV_margin && gb.POV.topY > 1)
         {
             RC = true;
         }
-        else if (SY >= MapDisplayHeight - 3 && gb.POV.topY < texmodel.YMax - MapDisplayHeight + 1)
+        else if (SY >= MapDisplayHeight - POV_margin && gb.POV.topY < texmodel.YMax - MapDisplayHeight + 1)
         {
             RC = true;
         }

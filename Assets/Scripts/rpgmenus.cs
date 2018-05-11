@@ -194,7 +194,7 @@ class rpgmenus
         }
 
         //{Restore the window to its regular size.}
-        Crt.Window(1, 1, 80, 25);
+        Crt.Window(1, 1, WDM.Book_WIDTH, WDM.CON_HEIGHT);
 
         //{If there's an associated Desc field, display it now.}
         RPMRefreshDesc(menu);
@@ -332,7 +332,7 @@ class rpgmenus
         }
 
         //{Reset the window to normal values}
-        Crt.Window(1, 1, 80, 25);
+        Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
 
         return r;
     }
@@ -475,7 +475,7 @@ class rpgmenus
             Crt.ClrScr();
             Crt.TextColor(menu.dTexColor);
             rpgtext.Delineate(RPMLocateByPosition(menu, menu.selectItem).desc, menu.dx2 - menu.dx1 - 1, 1);
-            Crt.Window(1, 1, 80, 25);
+            Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
         }
     }
 
@@ -559,7 +559,7 @@ class rpgmenus
         if ((menu.selectItem < menu.topItem) || ((menu.selectItem - menu.topItem) > (menu.y2 - menu.y1 - 2)))
         {
             //{First, restore the normal window size, since DisplayMenu will try to resize it.}
-            Crt.Window(1, 1, 80, 25);
+            Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
 
             //{Determine an appropriate new value for topitem.}
             RPMReposition(menu);
@@ -575,7 +575,7 @@ class rpgmenus
             Crt.Write(msg.Substring(0, Math.Min(width, msg.Length)));
 
             //{Restore the window to its regular size.}
-            Crt.Window(1, 1, 80, 25);
+            Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
 
             //{If this menu features item descriptions, better refresh the text.}
             if (menu.dx1 > 0)
@@ -617,7 +617,7 @@ class rpgmenus
         if ((menu.selectItem < menu.topItem) || ((menu.selectItem - menu.topItem) > (menu.y2 - menu.y1 - 2)))
         {
             //{First, restore the normal window size, since DisplayMenu will try to resize it.}
-            Crt.Window(1, 1, 80, 25);
+            Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
 
             //{Determine an appropriate new value for topitem.}
             RPMReposition(menu);
@@ -633,7 +633,7 @@ class rpgmenus
             Crt.Write(msg.Substring(0, Math.Min(width, msg.Length)));
 
             //{Restore the window to its regular size.}
-            Crt.Window(1, 1, 80, 25);
+            Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
 
             //{If this menu features item descriptions, better refresh the text.}
             if (menu.dx1 > 0)

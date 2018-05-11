@@ -176,14 +176,10 @@ public class rpgtext
 
     public static Crt.Color DCBulletColor = Crt.Color.Green;
     public static Crt.Color DCTextColor = Crt.Color.LightGreen;
-    public static int DCTextBox_X1 = 1;
-    public static int DCTextBox_Y1 = 1;
-    public static int DCTextBox_X2 = 80;
-    public static int DCTextBox_Y2 = 3;
 
     //{ This is the location of the more message for GamePause. }
-    public static int MORE_X = DCTextBox_X2 - 5;
-    public static int MORE_Y = DCTextBox_Y2;
+    public static int MORE_X = WDM.RPGMsg_X2 - 5;
+    public static int MORE_Y = WDM.RPGMsg_Y2;
     public static Crt.Color MORE_Color = Crt.Color.Blue;
     public static string MORE_Msg = "(more)";
 
@@ -269,13 +265,13 @@ public class rpgtext
     public class SharedKeyBuffer
     {
         static object keypressLock = new object();
-        static Stack<Key> keypresses = new Stack<Key>();
+        static Queue<Key> keypresses = new Queue<Key>();
 
         public void AddKeypress(Key key)
         {
             lock (keypressLock)
             {
-                keypresses.Push(key);
+                keypresses.Enqueue(key);
             }
         }
 
@@ -290,7 +286,7 @@ public class rpgtext
                 {
                     if (keypresses.Count > 0)
                     {
-                        k = keypresses.Pop();
+                        k = keypresses.Dequeue();
                         done = true;
                     }
                 }
@@ -573,13 +569,13 @@ public class rpgtext
         Delineate(msg, x2 - x1 - 1, 1);
 
         //{ restore the window to its original, full dimensions.}
-        Crt.Window(1, 1, 80, 25);
+        Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
     }
 
     public static void DCNewMessage()
     {
         //{ Start a new line in the DCMessage area.}
-        Crt.Window(DCTextBox_X1, DCTextBox_Y1, DCTextBox_X2, DCTextBox_Y2);
+        Crt.Window(WDM.RPGMsg_X, WDM.RPGMsg_Y, WDM.RPGMsg_X2, WDM.RPGMsg_Y2);
 
         Crt.GotoXY(GM_X, GM_Y);
 
@@ -597,7 +593,7 @@ public class rpgtext
         GM_X = Crt.WhereX();
         GM_Y = Crt.WhereY();
 
-        Crt.Window(1, 1, 80, 25);
+        Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
     }
 
     public static void DCGameMessage(string msg, bool lf)
@@ -617,12 +613,12 @@ public class rpgtext
         Crt.TextColor(DCTextColor);
 
 	    //{ Set the window to the desired print area, and move to the right pos.}
-	    Crt.Window(DCTextBox_X1,DCTextBox_Y1,DCTextBox_X2,DCTextBox_Y2);
+	    Crt.Window(WDM.RPGMsg_X,WDM.RPGMsg_Y,WDM.RPGMsg_X2,WDM.RPGMsg_Y2);
 	    Crt.GotoXY(GM_X, GM_Y);
 
         //{call the Delineate procedure to prettyprint it.}
         Crt.AutoScrollOn();
-        Delineate(msg, DCTextBox_X2 - DCTextBox_X1 + 1, GM_X);
+        Delineate(msg, WDM.RPGMsg_WIDTH, GM_X);
         Crt.AutoScrollOff();
 
         //{Save the current cursor position.}
@@ -630,7 +626,7 @@ public class rpgtext
 	    GM_Y = Crt.WhereY();
 
 	    //{restore the window to its original, full dimensions.}
-	    Crt.Window(1,1,80,25);
+	    Crt.Window(1,1,WDM.CON_WIDTH,WDM.CON_HEIGHT);
     }
 
     public static void DCGameMessage(string msg)
@@ -655,12 +651,12 @@ public class rpgtext
         Crt.TextColor(DCTextColor);
 
         //{ Set the window to the desired print area, and move to the right pos.}
-        Crt.Window(DCTextBox_X1, DCTextBox_Y1, DCTextBox_X2, DCTextBox_Y2);
+        Crt.Window(WDM.RPGMsg_X, WDM.RPGMsg_Y, WDM.RPGMsg_X2, WDM.RPGMsg_Y2);
         Crt.GotoXY(GM_X, GM_Y);
 
         Crt.ClrEol();
 
-        int width = Math.Min(DCTextBox_X2 - DCTextBox_X1 - GM_X, msg.Length);
+        int width = Math.Min(WDM.RPGMsg_WIDTH- GM_X + 1, msg.Length);
         if (width < 1)
         {
             return;
@@ -670,7 +666,7 @@ public class rpgtext
         Crt.Write(msg.Substring(0, width));
 
         //{restore the window to its original, full dimensions.}
-        Crt.Window(1, 1, 80, 25);
+        Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
     }
 
     public static void SetKeyMap()

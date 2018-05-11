@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: curses_vector_48x72_171
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300342, guid: d0e398cf4061e0d4699bda65feb70ec1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4d78ae126b35db741a0ab339ecc3b876, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

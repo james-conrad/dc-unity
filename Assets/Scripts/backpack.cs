@@ -19,9 +19,9 @@ public class backpack
 
         /* Start by doing the HANDYMAP case display. */
         const int X1 = WDM.HM_X;
-        const int X2 = WDM.HM_X + WDM.HM_WIDTH;
+        const int X2 = WDM.HM_X2;
         const int Y1 = WDM.HM_Y;
-        const int Y2 = WDM.HM_Y + WDM.HM_HEIGHT;
+        const int Y2 = WDM.HM_Y2;
 
         Crt.Window(X1, Y1, X2, Y2);
         Crt.ClrScr();
@@ -262,7 +262,7 @@ public class backpack
 	    const int C5 = 22;
 	    const int C6 = 26;
 
-	    Crt.Window(WDM.PCSWin_X+1,WDM.InvWin_Y+1,WDM.PCSWin_X2-1,WDM.PCSWin_Y2-1);
+	    Crt.Window(WDM.PCSWin_X + 1,WDM.PCSWin_Y + 1,WDM.PCSWin_X2 - 1, WDM.PCSWin_Y2 - 1);
 	    Crt.ClrScr();
 	    Crt.TextColor(Crt.Color.Blue);
 	    Crt.GotoXY(C1,1);
@@ -300,7 +300,7 @@ public class backpack
         /*This procedure sets up the BackPack display.*/
         Crt.Window(WDM.EqpWin_X, WDM.EqpWin_Y, WDM.PCSWin_X2, WDM.InvWin_Y2);
         Crt.ClrScr();
-        Crt.Window(1, 1, 80, 25);
+        Crt.Window(1, 1, WDM.CON_WIDTH, WDM.CON_HEIGHT);
         rpgtext.LovelyBox(Crt.Color.LightGray, WDM.EqpWin_X, WDM.EqpWin_Y, WDM.InvWin_X2, WDM.InvWin_Y2);
         Crt.TextColor(Crt.Color.Green);
         Crt.GotoXY(WDM.EqpWin_X + 2, WDM.EqpWin_Y2);
@@ -313,7 +313,7 @@ public class backpack
         rpgtext.LovelyBox(Crt.Color.DarkGray, WDM.PCSWin_X, WDM.PCSWin_Y, WDM.PCSWin_X2, WDM.PCSWin_Y2);
         DisplayPCStats(SC);
         Crt.TextColor(Crt.Color.DarkGray);
-        Crt.GotoXY(WDM.PCSWin_X, WDM.PCSWin_Y + 1);
+        Crt.GotoXY(WDM.PCSWin_X, WDM.PCSWin_Y2 + 1);
         Crt.Write("/ - Mode  d - Drop");
         Crt.GotoXY(WDM.PCSWin_X, WDM.PCSWin_Y2 + 2);
         Crt.Write("[SPACE] - Default Item Action");
